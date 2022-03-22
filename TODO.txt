@@ -1,0 +1,15 @@
+// TODOs  
+
+ThemeContext
+UserContext
+useFetchComments() hook
+DataContext and useReducer()
+const {isLoading, position, error} = useGeoPosition() from Reducer state
+useLocalStorage ... including form new and edit contents
+
+MAYBE
+hardcode the user // comment re "authenticated via... "
+login screen and AuthContext and <Authenticated /> <NotAuthenticated />
+
+
+NOTES
