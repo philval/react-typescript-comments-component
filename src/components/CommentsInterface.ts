@@ -23,7 +23,7 @@ interface IImage {
   webp: string;
 }
 
-export { IComments, IComment, IUser, IImage };
+export type { IComments, IComment, IUser, IImage };
 
 // https://stackoverflow.com/questions/37263357/how-to-declare-and-import-typescript-interfaces-in-a-separate-file/60343829
 
