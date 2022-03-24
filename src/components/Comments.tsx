@@ -3,19 +3,13 @@ import Comment from "./Comment";
 import NewCommentForm from "./NewCommentForm";
 
 import { IComments } from "./CommentsInterface";
+import { IComment } from "./CommentsInterface";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function Comments(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
-  const [comments, setComments] = useState<IComments[]>([]);
-
-  // TODO useReducer reducer for fetch() state
-  // TODO UseFetchComments
-  // idle,pending, fulfilled, rejected
-
-  // TODO useReducer for IComments[] state
-  // after forms submitted, comment deleted etc i.e. USER INTENTS
+  const [data, setData] = useState<Array<IComments>>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,9 +21,9 @@ export default function Comments(): JSX.Element {
             Accept: "application/json"
           }
         });
-        const data = await res.json();
 
-        setComments(data);
+        const data = await res.json();
+        setData(data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -41,9 +35,6 @@ export default function Comments(): JSX.Element {
     fetchData();
   }, []);
 
-  // TODO return payload, ststus, error ?? kent ? Tanner ?
-  // TODO kent do not using isloading booleans
-
   if (loading) {
     return <div>"Loading..."</div>;
   }
@@ -51,16 +42,12 @@ export default function Comments(): JSX.Element {
   return (
     <>
       <div>
-        {comments.map((comment: IComments, index: number) => (
-          <Comment key={index} comment={comment} />
-        ))}
+        {data.length !== 0 &&
+          data[0].comments.map((comment: IComment) => (
+            <Comment key={comment.id} comment={comment} />
+          ))}
       </div>
-      <div>
-        <NewCommentForm />
-      </div>
+      <NewCommentForm />
     </>
   );
 }
-
-// TODO naming of props is confusing
-// Maybe switch to "data"

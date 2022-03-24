@@ -9,9 +9,7 @@ export default function NewCommentForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("new comment is: ", newComment);
     // TODO update state via reducer
-    // reset form contents
     setNewComment("");
   };
 

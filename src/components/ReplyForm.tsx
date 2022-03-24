@@ -14,14 +14,11 @@ export default function ReplyForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("reply is: ", reply);
-    // TODO
-    // update state
-    // hide form
+    // TODO update state via reducer
     handleToggleReply();
-    // reset form contents
     setReply("");
   };
+
   return (
     <>
       <button style={{ marginBottom: 24 }} onClick={handleToggleReply}>
