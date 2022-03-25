@@ -5,7 +5,7 @@ export default function CommentReply({ reply }: any) {
   return (
     <div
       style={{
-        backgroundColor: "#CCCCFF",
+        backgroundColor: "#cffafe",
         padding: 12,
         marginBottom: 24
       }}

@@ -8,7 +8,7 @@ export default function Comment({ comment }: any) {
     <div key={comment.id}>
       <div
         style={{
-          backgroundColor: "#B0C4DE",
+          backgroundColor: "#e2e8f0",
           padding: 12,
           marginBottom: 24
         }}

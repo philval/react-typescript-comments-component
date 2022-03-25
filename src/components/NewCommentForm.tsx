@@ -17,7 +17,7 @@ export default function NewCommentForm() {
     <>
       <div
         style={{
-          backgroundColor: "pink",
+          backgroundColor: "#ffe4e6",
           padding: 12,
           marginBottom: 24
         }}
