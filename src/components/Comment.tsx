@@ -1,9 +1,11 @@
 import { IComment } from "./CommentsInterface";
 import ReplyForm from "../components/ReplyForm";
 import CommentReply from "../components/CommentReply";
+interface Props {
+  comment: IComment;
+}
 
-// TODO type props
-export default function Comment({ comment }: any) {
+export default function Comment({ comment }: Props) {
   return (
     <div key={comment.id}>
       <div
