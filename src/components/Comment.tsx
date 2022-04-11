@@ -16,7 +16,7 @@ export default function Comment({ comment }: Props) {
         }}
       >
         <p>{comment.score}</p>
-        <img src={comment.user.image.png} alt=""></img>
+        <img alt="avatar" src={comment.user.image.png}></img>
         <p>{comment.user.username}</p>
         <p>{comment.createdAt}</p>
         <p>{comment.content}</p>

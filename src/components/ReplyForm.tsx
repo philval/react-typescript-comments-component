@@ -25,10 +25,13 @@ export default function ReplyForm() {
         Reply
       </button>
       {toggleReply && (
-        <form onSubmit={handleSubmit}>
-          <input type="text" value={reply} onChange={handleChange} />
-          <button type="submit">REPLY</button>
-        </form>
+        <div>
+          <img alt="avatar" src="images/avatars/image-juliusomo.png" />
+          <form onSubmit={handleSubmit}>
+            <input type="text" value={reply} onChange={handleChange} />
+            <button type="submit">REPLY</button>
+          </form>
+        </div>
       )}
     </>
   );

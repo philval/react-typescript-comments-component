@@ -22,7 +22,7 @@ export default function NewCommentForm() {
           marginBottom: 24
         }}
       >
-        <img src="images/avatars/image-juliusomo.png" alt=""></img>
+        <img src="images/avatars/image-juliusomo.png" alt="avatar"></img>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
