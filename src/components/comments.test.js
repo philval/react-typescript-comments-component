@@ -92,4 +92,12 @@ describe("New Comment", () => {
       "images/avatars/image-juliusomo.png"
     );
   });
+
+  test("New Comment form has placeholder text", () => {
+    render(<NewCommentForm />);
+    expect(screen.getByRole("textbox")).toHaveAttribute(
+      "placeholder",
+      "Add a comment..."
+    );
+  });
 });
