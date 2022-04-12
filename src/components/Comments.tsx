@@ -36,7 +36,7 @@ export default function Comments(): JSX.Element {
   }, []);
 
   if (loading) {
-    return <div>"Loading..."</div>;
+    return <div>Loading...</div>;
   }
 
   return (
