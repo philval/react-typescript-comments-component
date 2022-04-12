@@ -4,7 +4,7 @@ interface Props {
   reply: IComment;
 }
 
-export default function CommentReply({ reply }: Props) {
+export default function CommentReply({ reply }: Props): JSX.Element {
   return (
     <div
       style={{

@@ -3,7 +3,7 @@ interface Props {
   username: string;
 }
 
-export default function ReplyForm({ username }: Props) {
+export default function ReplyForm({ username }: Props): JSX.Element {
   const [toggleReply, setToggleReply] = useState<boolean>(false);
   const [reply, setReply] = useState<string>(`@${username}, `); // anti-pattern ?
 

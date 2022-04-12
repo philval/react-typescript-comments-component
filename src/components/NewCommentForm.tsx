@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function NewCommentForm() {
+export default function NewCommentForm(): JSX.Element {
   const [newComment, setNewComment] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

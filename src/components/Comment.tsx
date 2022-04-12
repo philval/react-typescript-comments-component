@@ -5,7 +5,7 @@ interface Props {
   comment: IComment;
 }
 
-export default function Comment({ comment }: Props) {
+export default function Comment({ comment }: Props): JSX.Element {
   return (
     <div key={comment.id}>
       <div
