@@ -18,7 +18,7 @@ export default function CommentReply({ reply }: Props) {
       <p>{reply.user.username}</p>
       <p>{reply.createdAt}</p>
       <p>{reply.content}</p>
-      <ReplyForm author={reply.user.username} />
+      <ReplyForm username={reply.user.username} />
     </div>
   );
 }
