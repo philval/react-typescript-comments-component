@@ -21,7 +21,7 @@ export default function Comment({ comment }: Props) {
         <p>{comment.createdAt}</p>
         <p>{comment.content}</p>
         <div>
-          <ReplyForm />
+          <ReplyForm username={comment.user.username} />
         </div>
       </div>
       <div

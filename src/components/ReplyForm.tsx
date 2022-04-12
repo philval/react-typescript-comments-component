@@ -1,8 +1,11 @@
 import { useState } from "react";
+interface Props {
+  username: string;
+}
 
-export default function ReplyForm() {
+export default function ReplyForm({ username }: Props) {
   const [toggleReply, setToggleReply] = useState<boolean>(false);
-  const [reply, setReply] = useState<string>("");
+  const [reply, setReply] = useState<string>(`@${username}, `); // anti-pattern ?
 
   const handleToggleReply = () => {
     setToggleReply(!toggleReply);
@@ -28,7 +31,12 @@ export default function ReplyForm() {
         <div>
           <img alt="avatar" src="images/avatars/image-juliusomo.png" />
           <form onSubmit={handleSubmit}>
-            <input type="text" value={reply} onChange={handleChange} />
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              value={reply}
+              onChange={handleChange}
+            />
             <button type="submit">REPLY</button>
           </form>
         </div>

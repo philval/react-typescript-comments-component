@@ -11,7 +11,7 @@ import ReplyForm from "./ReplyForm";
 import NewCommentForm from "./NewCommentForm";
 
 describe("App", () => {
-  test("Renders App title", () => {
+  test("Renders app title", () => {
     render(<App />);
 
     expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument;
@@ -21,7 +21,7 @@ describe("App", () => {
   });
 });
 
-describe("Single Comment", () => {
+describe("Single comment", () => {
   //props
   const comment = {
     id: 1,
@@ -38,7 +38,7 @@ describe("Single Comment", () => {
     replies: []
   };
 
-  test("Displays Comment contents", () => {
+  test("Displays comment contents", () => {
     render(<Comment comment={comment} />);
 
     expect(screen.getByText(/^42$/)).toBeInTheDocument;
@@ -53,8 +53,26 @@ describe("Single Comment", () => {
       "Reply"
     );
   });
+});
 
-  test("Toggles Comment Reply form", () => {
+describe("Comment reply", () => {
+  //props
+  const comment = {
+    id: 1,
+    content: "This is the comment content",
+    createdAt: "5 months ago",
+    score: 42,
+    user: {
+      image: {
+        png: "images/avatars/image-amyrobson.png",
+        webp: "images/avatars/image-amyrobson.webp"
+      },
+      username: "johndoe"
+    },
+    replies: []
+  };
+
+  test("Toggles reply form", () => {
     render(<Comment comment={comment} />);
 
     // when asserting that an element isn't there, use queryBy
@@ -74,7 +92,7 @@ describe("Single Comment", () => {
     expect(screen.queryByRole("button", { name: "REPLY" })).toBeNull();
   });
 
-  test("Reply Form displays User avatar", () => {
+  test("Reply form displays User avatar", () => {
     render(<ReplyForm />);
     fireEvent.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByAltText("avatar")).toHaveAttribute(
@@ -82,10 +100,25 @@ describe("Single Comment", () => {
       "images/avatars/image-juliusomo.png"
     );
   });
+
+  test("Reply form has placeholder text", () => {
+    render(<ReplyForm />);
+    fireEvent.click(screen.getByRole("button", { name: "Reply" }));
+    expect(screen.getByRole("textbox")).toHaveAttribute(
+      "placeholder",
+      "Add a comment..."
+    );
+  });
+
+  test("Reply starts with commenter's username", () => {
+    render(<Comment comment={comment} />);
+    fireEvent.click(screen.getByRole("button", { nane: "Reply" }));
+    expect(screen.getByRole("textbox")).toHaveValue("@johndoe, ");
+  });
 });
 
-describe("New Comment", () => {
-  test("New Comment form displays User avatar", () => {
+describe("New comment", () => {
+  test("New comment form displays User avatar", () => {
     render(<NewCommentForm />);
     expect(screen.getByAltText("avatar")).toHaveAttribute(
       "src",
@@ -93,7 +126,7 @@ describe("New Comment", () => {
     );
   });
 
-  test("New Comment form has placeholder text", () => {
+  test("New comment form has placeholder text", () => {
     render(<NewCommentForm />);
     expect(screen.getByRole("textbox")).toHaveAttribute(
       "placeholder",
