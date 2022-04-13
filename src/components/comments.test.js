@@ -1,9 +1,17 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
 import "@testing-library/jest-dom";
 import App from "../App";
 import Comment from "./Comment";
 import ReplyForm from "./ReplyForm";
 import NewCommentForm from "./NewCommentForm";
+
+// Ref RTL best practices
+// https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
+
+// Ref RTL userEvent
+// https://testing-library.com/docs/user-event/intro/
 
 describe("App", () => {
   test("Renders app title", () => {
@@ -67,7 +75,8 @@ describe("Comment reply", () => {
     replies: []
   };
 
-  test("Toggles reply form", () => {
+  test("Toggles reply form", async () => {
+    const user = userEvent.setup();
     render(<Comment comment={comment} />);
 
     // when asserting that an element isn't there, use queryBy
@@ -75,39 +84,42 @@ describe("Comment reply", () => {
     expect(screen.queryByRole("button", { name: "REPLY" })).toBeNull();
 
     // toggle on
-    fireEvent.click(screen.getByRole("button", { name: "Reply" }));
+    await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByRole("textbox")).toBeInTheDocument;
     expect(screen.getByRole("button", { name: "REPLY" })).toHaveTextContent(
       "REPLY"
     );
 
     // toggle off
-    fireEvent.click(screen.getByRole("button", { name: "Reply" }));
+    await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.queryByRole("textbox")).toBeNull();
     expect(screen.queryByRole("button", { name: "REPLY" })).toBeNull();
   });
 
-  test("Reply form displays User avatar", () => {
+  test("Reply form displays User avatar", async () => {
+    const user = userEvent.setup();
     render(<ReplyForm />);
-    fireEvent.click(screen.getByRole("button", { name: "Reply" }));
+    await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByAltText("avatar")).toHaveAttribute(
       "src",
       "images/avatars/image-juliusomo.png"
     );
   });
 
-  test("Reply form has placeholder text", () => {
+  test("Reply form has placeholder text", async () => {
+    const user = userEvent.setup();
     render(<ReplyForm />);
-    fireEvent.click(screen.getByRole("button", { name: "Reply" }));
+    await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByRole("textbox")).toHaveAttribute(
       "placeholder",
       "Add a comment..."
     );
   });
 
-  test("Reply starts with commenter's username", () => {
+  test("Reply starts with commenter's username", async () => {
+    const user = userEvent.setup();
     render(<Comment comment={comment} />);
-    fireEvent.click(screen.getByRole("button", { nane: "Reply" }));
+    await user.click(screen.getByRole("button", { nane: "Reply" }));
     expect(screen.getByRole("textbox")).toHaveValue("@johndoe, ");
   });
 });
