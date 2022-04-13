@@ -27,3 +27,17 @@ The component hierarchy was poor. I had been ignoring a "Warning: Each child in 
 ![component hierarchy after refactor](https://raw.githubusercontent.com/philval/react-typescript-comments-component/main/components-after-refactor.png)
 
 This of course all might change...
+
+## React Testing Library
+
+RTL was new to me, so a slow-down in progress for some learnings. I had implemented Cypress in a previous role on a non-trivial React UI, and we looked into RTL on that project but did not adopt it. So I decided to go for RTL, and kinda like it.
+
+To quote Robin Wieruch, "React Testing Library moves you towards testing user behavior and not implementation details". I was expecting to refactor components and state management, but users don't care implementation at all, so adopting RTL was a good investment. As I became more fluent with RTL too, it was possible to start writing the component tests first aka TDD.
+
+RTL tests are run by Jest, and on "watch mode" feedback is relatively instant with no context switching, so the DX is good. One nice feature of RTL is that selection of HTML elements is often by their aria-role, mimicking how a screen-reader sees the app.
+
+The library jest-dom extends RTL with custom jest matchers to test the state of the DOM :
+[https://github.com/testing-library/jest-dom](https://github.com/testing-library/jest-dom)
+
+One useful reference from the RTL author Kent C. Dodds :
+[Common mistakes with React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
