@@ -1,16 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-export default function NewCommentForm(): JSX.Element {
+export default function NewCommentForm({addNewComment}: {addNewComment: (comment: string) => void}): JSX.Element {
   const [newComment, setNewComment] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewComment(e.target.value);
   };
 
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO update state via reducer
-    setNewComment("");
+    addNewComment(newComment)
   };
 
   return (

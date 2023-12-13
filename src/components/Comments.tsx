@@ -9,12 +9,13 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function Comments(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<Array<IComments>>([]);
+  const [comments, setComments] = useState<Array<IComments>>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         await sleep(1000);
+        // could fail in many modes, and would need error handling
         const res = await fetch("./data.json", {
           headers: {
             "Content-Type": "application/json",
@@ -23,7 +24,7 @@ export default function Comments(): JSX.Element {
         });
 
         const data = await res.json();
-        setData(data);
+        setComments(data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -39,15 +40,37 @@ export default function Comments(): JSX.Element {
     return <div>Loading...</div>;
   }
 
+  function addNewComment(comment: string): void {
+
+    const newComment: IComment = {
+      id: Date.now(), // milliseconds, not necessarily unique
+      content: comment,
+      createdAt: "today", // TODO use UNIX timestamp
+      score: 0,
+      "user": {
+        "image": {
+          "png": "./images/avatars/image-juliusomo.png",
+          "webp": "./images/avatars/image-juliusomo.webp"
+        },
+        "username": "juliusomo"
+      },
+      "replies": []
+    }
+
+    setComments((prevComments: IComments[]): IComments[] => {
+      return [{ ...prevComments[0], comments: [...prevComments[0].comments, newComment] }];
+    });
+  }
+
   return (
     <>
       <div>
-        {data.length !== 0 &&
-          data[0].comments.map((comment: IComment) => (
+        {comments.length !== 0 &&
+          comments[0].comments.map((comment: IComment) => (
             <Comment key={comment.id} comment={comment} />
           ))}
       </div>
-      <NewCommentForm />
+      <NewCommentForm addNewComment={addNewComment} />
     </>
   );
 }
