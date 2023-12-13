@@ -1,9 +1,11 @@
 import { useState } from "react";
-interface Props {
-  username: string;
+interface ReplyFormProps {
+  username: string
+  commentID: number
+  addNewReply: (comment: string, commentID: number) => void
 }
 
-export default function ReplyForm({ username }: Props): JSX.Element {
+export default function ReplyForm({ username, commentID, addNewReply }: ReplyFormProps): JSX.Element {
   const [toggleReply, setToggleReply] = useState<boolean>(false);
   const [reply, setReply] = useState<string>(`@${username}, `); // anti-pattern ?
 
@@ -17,7 +19,8 @@ export default function ReplyForm({ username }: Props): JSX.Element {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO update state via reducer
+    // how will addReply update replies[] on comment ?
+    addNewReply(reply, commentID);
     handleToggleReply();
     setReply("");
   };

@@ -1,11 +1,13 @@
 import { IComment } from "./CommentsInterface";
 import ReplyForm from "../components/ReplyForm";
 import CommentReply from "../components/CommentReply";
-interface Props {
+
+interface CommentProps {
   comment: IComment;
+  addNewReply:  (comment: string, commentID: number) => void
 }
 
-export default function Comment({ comment }: Props): JSX.Element {
+export default function Comment({ comment, addNewReply }: CommentProps): JSX.Element {
   return (
     <div key={comment.id}>
       <div
@@ -21,7 +23,7 @@ export default function Comment({ comment }: Props): JSX.Element {
         <p>{comment.createdAt}</p>
         <p>{comment.content}</p>
         <div>
-          <ReplyForm username={comment.user.username} />
+          <ReplyForm username={comment.user.username} commentID={comment.id} addNewReply={addNewReply}/>
         </div>
       </div>
       <div
@@ -31,7 +33,7 @@ export default function Comment({ comment }: Props): JSX.Element {
       >
         {comment.replies &&
           comment.replies.map((reply: IComment) => (
-            <CommentReply key={reply.id} reply={reply} />
+            <CommentReply key={reply.id} reply={reply} addNewReply={addNewReply}/>
           ))}
       </div>
     </div>

@@ -1,10 +1,11 @@
 import { IComment } from "./CommentsInterface";
 import ReplyForm from "../components/ReplyForm";
-interface Props {
+interface CommentReplyProps {
   reply: IComment;
+  addNewReply:  (comment: string, commentID: number) => void
 }
 
-export default function CommentReply({ reply }: Props): JSX.Element {
+export default function CommentReply({ reply, addNewReply }: CommentReplyProps): JSX.Element {
   return (
     <div
       style={{
@@ -13,12 +14,13 @@ export default function CommentReply({ reply }: Props): JSX.Element {
         marginBottom: 24
       }}
     >
+      <p>replyID: {reply.id}</p>
       <p>{reply.score}</p>
       <img src={reply.user.image.png} alt=""></img>
       <p>{reply.user.username}</p>
       <p>{reply.createdAt}</p>
       <p>{reply.content}</p>
-      <ReplyForm username={reply.user.username} />
+      <ReplyForm username={reply.user.username} commentID={reply.id} addNewReply={addNewReply}/>
     </div>
   );
 }

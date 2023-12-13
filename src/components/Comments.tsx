@@ -62,12 +62,16 @@ export default function Comments(): JSX.Element {
     });
   }
 
+  function addNewReply(comment: string, commentID: number): string {
+    return "worl in progress"
+  }
+
   return (
     <>
       <div>
         {comments.length !== 0 &&
           comments[0].comments.map((comment: IComment) => (
-            <Comment key={comment.id} comment={comment} />
+            <Comment key={comment.id} comment={comment} addNewReply={addNewReply} />
           ))}
       </div>
       <NewCommentForm addNewComment={addNewComment} />
