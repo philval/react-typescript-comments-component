@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-export default function NewCommentForm({addNewComment}: {addNewComment: (comment: string) => void}): JSX.Element {
+interface NewCommentFormProps {
+  addNewComment: (comment: string) => void
+}
+
+export default function NewCommentForm({addNewComment}:  NewCommentFormProps): JSX.Element {
   const [newComment, setNewComment] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
