@@ -11,6 +11,7 @@ export default function NewCommentForm({addNewComment}: {addNewComment: (comment
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     addNewComment(newComment)
+    setNewComment("")
   };
 
   return (

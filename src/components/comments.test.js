@@ -119,7 +119,7 @@ describe("Comment reply", () => {
   test("Reply starts with commenter's username", async () => {
     const user = userEvent.setup();
     render(<Comment comment={comment} />);
-    await user.click(screen.getByRole("button", { nane: "Reply" }));
+    await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByRole("textbox")).toHaveValue("@johndoe, ");
   });
 });
@@ -140,4 +140,18 @@ describe("New comment", () => {
       "Add a comment..."
     );
   });
+
+  test("New comment form resets after text submitted", async () => {
+
+    const addNewComment = jest.fn();
+    const user = userEvent.setup();
+
+    render(<NewCommentForm addNewComment={addNewComment}/>);
+    await user.type(screen.getByRole("textbox"), "The Quick Brown Fox");
+    await user.click(screen.getByRole("button", {name: "SEND"}));
+  
+    expect(addNewComment).toHaveBeenCalledTimes(1);
+    expect(addNewComment).toHaveBeenCalledWith("The Quick Brown Fox");
+    expect(screen.getByRole("textbox")).toHaveValue("");
+  })
 });
