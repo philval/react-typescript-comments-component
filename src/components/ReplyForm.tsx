@@ -1,11 +1,15 @@
 import { useState } from "react";
 interface ReplyFormProps {
-  username: string
-  commentID: number
-  addNewReply: (comment: string, commentID: number) => void
+  username: string;
+  commentID: number;
+  addNewReply: (comment: string, commentID: number) => void;
 }
 
-export default function ReplyForm({ username, commentID, addNewReply }: ReplyFormProps): JSX.Element {
+export default function ReplyForm({
+  username,
+  commentID,
+  addNewReply
+}: ReplyFormProps): JSX.Element {
   const [toggleReply, setToggleReply] = useState<boolean>(false);
   const [reply, setReply] = useState<string>(`@${username}, `); // anti-pattern ?
 
@@ -22,7 +26,7 @@ export default function ReplyForm({ username, commentID, addNewReply }: ReplyFor
     // how will addReply update replies[] on comment ?
     addNewReply(reply, commentID);
     handleToggleReply();
-    setReply("");
+    setReply(`@${username}, `);
   };
 
   return (
