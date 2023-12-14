@@ -41,29 +41,34 @@ export default function Comments(): JSX.Element {
   }
 
   function addNewComment(comment: string): void {
-
     const newComment: IComment = {
       id: Date.now(), // milliseconds, not necessarily unique
       content: comment,
       createdAt: "today", // TODO use UNIX timestamp
       score: 0,
-      "user": {
-        "image": {
-          "png": "./images/avatars/image-juliusomo.png",
-          "webp": "./images/avatars/image-juliusomo.webp"
+      user: {
+        image: {
+          png: "./images/avatars/image-juliusomo.png",
+          webp: "./images/avatars/image-juliusomo.webp"
         },
-        "username": "juliusomo"
+        username: "juliusomo"
       },
-      "replies": []
-    }
+      replies: []
+    };
 
     setComments((prevComments: IComments[]): IComments[] => {
-      return [{ ...prevComments[0], comments: [...prevComments[0].comments, newComment] }];
+      return [
+        {
+          ...prevComments[0],
+          comments: [...prevComments[0].comments, newComment]
+        }
+      ];
     });
   }
 
   function addNewReply(comment: string, commentID: number): string {
-    return "worl in progress"
+    console.log("comment text:", comment, "commentID:", commentID);
+    return "update state...";
   }
 
   return (
@@ -71,7 +76,11 @@ export default function Comments(): JSX.Element {
       <div>
         {comments.length !== 0 &&
           comments[0].comments.map((comment: IComment) => (
-            <Comment key={comment.id} comment={comment} addNewReply={addNewReply} />
+            <Comment
+              key={comment.id}
+              comment={comment}
+              addNewReply={addNewReply}
+            />
           ))}
       </div>
       <NewCommentForm addNewComment={addNewComment} />

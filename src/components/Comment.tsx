@@ -4,10 +4,13 @@ import CommentReply from "../components/CommentReply";
 
 interface CommentProps {
   comment: IComment;
-  addNewReply:  (comment: string, commentID: number) => void
+  addNewReply: (comment: string, commentID: number) => void;
 }
 
-export default function Comment({ comment, addNewReply }: CommentProps): JSX.Element {
+export default function Comment({
+  comment,
+  addNewReply
+}: CommentProps): JSX.Element {
   return (
     <div key={comment.id}>
       <div
@@ -23,7 +26,11 @@ export default function Comment({ comment, addNewReply }: CommentProps): JSX.Ele
         <p>{comment.createdAt}</p>
         <p>{comment.content}</p>
         <div>
-          <ReplyForm username={comment.user.username} commentID={comment.id} addNewReply={addNewReply}/>
+          <ReplyForm
+            username={comment.user.username}
+            commentID={comment.id}
+            addNewReply={addNewReply}
+          />
         </div>
       </div>
       <div
@@ -33,7 +40,11 @@ export default function Comment({ comment, addNewReply }: CommentProps): JSX.Ele
       >
         {comment.replies &&
           comment.replies.map((reply: IComment) => (
-            <CommentReply key={reply.id} reply={reply} addNewReply={addNewReply}/>
+            <CommentReply
+              key={reply.id}
+              reply={reply}
+              addNewReply={addNewReply}
+            />
           ))}
       </div>
     </div>
