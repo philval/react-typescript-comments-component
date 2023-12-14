@@ -4,8 +4,8 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import App from "../App";
 import Comment from "./Comment";
-import ReplyForm from "./ReplyForm";
 import NewCommentForm from "./NewCommentForm";
+import ReplyForm from "./ReplyForm";
 
 // Ref RTL best practices
 // https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
@@ -118,7 +118,8 @@ describe("Comment reply", () => {
 
   test("Reply starts with commenter's username", async () => {
     const user = userEvent.setup();
-    render(<Comment comment={comment} />);
+    const addNewReply = jest.fn();
+    render(<Comment comment={comment} addNewReply={addNewReply} />);
     await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByRole("textbox")).toHaveValue("@johndoe, ");
   });
@@ -142,16 +143,13 @@ describe("New comment", () => {
   });
 
   test("New comment form resets after text submitted", async () => {
-
     const addNewComment = jest.fn();
     const user = userEvent.setup();
-
-    render(<NewCommentForm addNewComment={addNewComment}/>);
+    render(<NewCommentForm addNewComment={addNewComment} />);
     await user.type(screen.getByRole("textbox"), "The Quick Brown Fox");
-    await user.click(screen.getByRole("button", {name: "SEND"}));
-  
+    await user.click(screen.getByRole("button", { name: "SEND" }));
     expect(addNewComment).toHaveBeenCalledTimes(1);
     expect(addNewComment).toHaveBeenCalledWith("The Quick Brown Fox");
     expect(screen.getByRole("textbox")).toHaveValue("");
-  })
+  });
 });
