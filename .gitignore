@@ -105,4 +105,7 @@ dist
 
 #typescript build
 build
+
+# My files
 TODO.txt
+SPEC.md
