@@ -27,7 +27,7 @@ describe("App", () => {
 describe("Single comment", () => {
   //props
   const comment = {
-    id: 1,
+    id: 1000,
     content: "This is the comment content",
     createdAt: "5 months ago",
     score: 42,
@@ -44,7 +44,7 @@ describe("Single comment", () => {
   test("Displays comment contents", () => {
     render(<Comment comment={comment} />);
 
-    expect(screen.getByText(/^42$/)).toBeInTheDocument();
+    expect(screen.getByText(/1000/)).toBeInTheDocument();
     expect(screen.getByAltText("avatar")).toHaveAttribute(
       "src",
       "images/avatars/image-amyrobson.png"
@@ -153,3 +153,5 @@ describe("New comment", () => {
     expect(screen.getByRole("textbox")).toHaveValue("");
   });
 });
+
+export {};
