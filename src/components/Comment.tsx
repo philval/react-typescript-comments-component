@@ -1,6 +1,7 @@
 import { IComment } from "./CommentsInterface";
 import ReplyForm from "../components/ReplyForm";
-import CommentReply from "../components/CommentReply";
+
+// NOTE comments JSX is recursive
 
 interface CommentProps {
   comment: IComment;
@@ -20,7 +21,8 @@ export default function Comment({
           marginBottom: 24
         }}
       >
-        <p>{comment.score}</p>
+        <p>CommentID: {comment.id}</p>
+        <p>Score: {comment.score}</p>
         <img alt="avatar" src={comment.user.image.png}></img>
         <p>{comment.user.username}</p>
         <p>{comment.createdAt}</p>
@@ -40,11 +42,8 @@ export default function Comment({
       >
         {comment.replies &&
           comment.replies.map((reply: IComment) => (
-            <CommentReply
-              key={reply.id}
-              reply={reply}
-              addNewReply={addNewReply}
-            />
+            // call </Comment /> recursively...
+            <Comment key={reply.id} comment={reply} addNewReply={addNewReply} />
           ))}
       </div>
     </div>
