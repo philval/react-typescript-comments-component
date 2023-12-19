@@ -5,6 +5,7 @@
   "keywords": [],
   "main": "src/index.tsx",
   "dependencies": {
+    "cypress": "^13.6.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-scripts": "5.0.0"
@@ -25,7 +26,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "cy:run": "cypress run --headless"
   },
   "browserslist": [
     ">0.2%",
