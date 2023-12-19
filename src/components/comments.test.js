@@ -28,7 +28,7 @@ describe("Single comment", () => {
   //props
   const comment = {
     id: 1000,
-    content: "This is the comment content",
+    content: "This is the 1st comment",
     createdAt: "5 months ago",
     score: 42,
     user: {
@@ -51,7 +51,7 @@ describe("Single comment", () => {
     );
     expect(screen.getByText("johndoe")).toBeInTheDocument();
     expect(screen.getByText("5 months ago")).toBeInTheDocument();
-    expect(screen.getByText("This is the comment content")).toBeInTheDocument();
+    expect(screen.getByText("This is the 1st comment")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Reply" })).toHaveTextContent(
       "Reply"
     );
