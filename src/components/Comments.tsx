@@ -7,6 +7,26 @@ import { IComment } from "./CommentsInterface";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// recursive function to find a comment by ID
+export function findCommentByID(
+  comments: IComment[],
+  commentID: number
+): IComment | null {
+  for (const comment of comments) {
+    if (comment.id === commentID) {
+      return comment;
+    }
+
+    if (comment.replies && comment.replies.length > 0) {
+      const reply = findCommentByID(comment.replies, commentID);
+      if (reply) {
+        return reply;
+      }
+    }
+  }
+  return null; // not found so iterate again
+}
+
 export default function Comments(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [comments, setComments] = useState<Array<IComments>>([]);
@@ -66,9 +86,34 @@ export default function Comments(): JSX.Element {
     });
   }
 
-  function addNewReply(comment: string, commentID: number): string {
-    console.log("comment text:", comment, "commentID:", commentID);
-    return "update state...";
+  function addNewReply(comment: string, commentID: number): void {
+    console.log("comment text:", comment, "commentID to update:", commentID);
+    const newReply: IComment = {
+      id: Date.now(), // milliseconds, not necessarily unique
+      content: comment,
+      createdAt: "today", // TODO use UNIX timestamp
+      score: 0,
+      user: {
+        image: {
+          png: "./images/avatars/image-juliusomo.png",
+          webp: "./images/avatars/image-juliusomo.webp"
+        },
+        username: "juliusomo"
+      },
+      replies: []
+    };
+
+    setComments((prevComments: IComments[]): IComments[] => {
+      const updatedComments = [...prevComments];
+
+      // new reply never mutates existing state
+      findCommentByID(updatedComments[0].comments, commentID)?.replies?.push(
+        newReply
+      );
+      // console.log("updatedComments:", JSON.stringify(updatedComments, null, 2));
+
+      return updatedComments;
+    });
   }
 
   return (
