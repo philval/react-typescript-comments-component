@@ -121,7 +121,7 @@ test("findCommentByID returns the correct comment", () => {
   // Arrange
   const comments = data[0].comments;
 
-  console.log("Test top level comment");
+  // console.log("Test top level comment");
   expect(findCommentByID(comments as IComment[], 1)).toEqual({
     id: 1,
     content: "Comment 1",
@@ -137,7 +137,7 @@ test("findCommentByID returns the correct comment", () => {
     replies: []
   });
 
-  console.log("Test nested comment");
+  // console.log("Test nested comment");
   expect(findCommentByID(comments as IComment[], 3)).toEqual({
     id: 3,
     content: "Comment 3",
@@ -153,7 +153,7 @@ test("findCommentByID returns the correct comment", () => {
     }
   });
 
-  console.log("Test nested nested comment");
+  // console.log("Test nested nested comment");
   expect(findCommentByID(comments as IComment[], 5)).toEqual({
     id: 5,
     content: "Comment 5",
@@ -169,7 +169,7 @@ test("findCommentByID returns the correct comment", () => {
     }
   });
 
-  console.log("Test level top level comment again");
+  // console.log("Test level top level comment again");
   expect(findCommentByID(comments as IComment[], 6)).toEqual({
     id: 6,
     content: "Comment 6",
@@ -185,10 +185,10 @@ test("findCommentByID returns the correct comment", () => {
     replies: []
   });
 
-  console.log("Test for ID that does not exist");
+  // console.log("Test for ID that does not exist");
   expect(findCommentByID(comments as IComment[], 42)).toEqual(null);
 
-  console.log("Test for no comments at all");
+  // console.log("Test for no comments at all");
   const noComments: IComment[] = [];
   expect(findCommentByID(noComments as IComment[], 42)).toEqual(null);
 });
