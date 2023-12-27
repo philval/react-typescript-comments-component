@@ -5,8 +5,6 @@ import NewCommentForm from "./NewCommentForm";
 import { IComments } from "./CommentsInterface";
 import { IComment } from "./CommentsInterface";
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 // recursive function to find a comment by ID
 export function findCommentByID(
   comments: IComment[],
@@ -34,7 +32,7 @@ export default function Comments(): JSX.Element {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await sleep(1000);
+        // await sleep(1000);
         // could fail in many modes, and would need error handling
         const res = await fetch("./data.json", {
           headers: {
