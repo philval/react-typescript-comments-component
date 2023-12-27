@@ -5,7 +5,6 @@
   "keywords": [],
   "main": "src/index.tsx",
   "dependencies": {
-    "cypress": "^13.6.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-scripts": "5.0.0"
@@ -17,6 +16,7 @@
     "@testing-library/user-event": "^14.1.0",
     "@types/react": "17.0.20",
     "@types/react-dom": "17.0.9",
+    "cypress": "^13.6.2",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.1",
     "typescript": "4.4.2"
