@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 
 interface NewCommentFormProps {
-  addNewComment: (comment: string) => void
+  addNewComment: (comment: string) => void;
 }
 
-export default function NewCommentForm({addNewComment}:  NewCommentFormProps): JSX.Element {
+export default function NewCommentForm({
+  addNewComment
+}: NewCommentFormProps): JSX.Element {
   const [newComment, setNewComment] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewComment(e.target.value);
   };
 
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addNewComment(newComment)
-    setNewComment("")
+    addNewComment(newComment);
+    setNewComment("");
   };
 
   return (
@@ -34,8 +35,11 @@ export default function NewCommentForm({addNewComment}:  NewCommentFormProps): J
             placeholder="Add a comment..."
             value={newComment}
             onChange={handleChange}
+            data-cy="inputNewComment"
           />
-          <button type="submit">SEND</button>
+          <button type="submit" data-cy="submitNewComment">
+            SEND
+          </button>
         </form>
       </div>
     </>
