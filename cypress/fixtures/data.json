@@ -1,0 +1,27 @@
+[
+  {
+    "currentUser": {
+      "image": {
+        "png": "./images/avatars/image-juliusomo.png",
+        "webp": "./images/avatars/image-juliusomo.webp"
+      },
+      "username": "user1"
+    },
+    "comments": [
+      {
+        "id": 1,
+        "content": "Comment 1",
+        "createdAt": "1 month ago",
+        "score": 12,
+        "user": {
+          "image": {
+            "png": "./images/avatars/image-amyrobson.png",
+            "webp": "./images/avatars/image-amyrobson.webp"
+          },
+          "username": "commenter1"
+        },
+        "replies": []
+      }
+    ]
+  }
+]
