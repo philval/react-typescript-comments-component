@@ -49,7 +49,8 @@ const data = [
                 webp: "./images/avatars/image-ramsesmiron.webp"
               },
               username: "ramsesmiron"
-            }
+            },
+            replies: []
           },
           {
             id: 4,
@@ -78,7 +79,8 @@ const data = [
                     webp: "./images/avatars/image-ramsesmiron.webp"
                   },
                   username: "ramsesmiron"
-                }
+                },
+                replies: []
               }
             ]
           }
@@ -109,7 +111,8 @@ const data = [
             webp: "./images/avatars/image-amyrobson.webp"
           },
           username: "amyrobson"
-        }
+        },
+        replies: []
       }
     ]
   }
@@ -119,10 +122,10 @@ import { findCommentByID } from "./Comments";
 
 test("findCommentByID returns the correct comment", () => {
   // Arrange
-  const comments = data[0].comments;
+  const comments: IComment[] = data[0].comments;
 
   // console.log("Test top level comment");
-  expect(findCommentByID(comments as IComment[], 1)).toEqual({
+  expect(findCommentByID(comments, 1)).toEqual({
     id: 1,
     content: "Comment 1",
     createdAt: "1 month ago",
@@ -138,7 +141,7 @@ test("findCommentByID returns the correct comment", () => {
   });
 
   // console.log("Test nested comment");
-  expect(findCommentByID(comments as IComment[], 3)).toEqual({
+  expect(findCommentByID(comments, 3)).toEqual({
     id: 3,
     content: "Comment 3",
     createdAt: "1 week ago",
@@ -150,11 +153,12 @@ test("findCommentByID returns the correct comment", () => {
         webp: "./images/avatars/image-ramsesmiron.webp"
       },
       username: "ramsesmiron"
-    }
+    },
+    replies: []
   });
 
   // console.log("Test nested nested comment");
-  expect(findCommentByID(comments as IComment[], 5)).toEqual({
+  expect(findCommentByID(comments, 5)).toEqual({
     id: 5,
     content: "Comment 5",
     createdAt: "1 week ago",
@@ -166,11 +170,12 @@ test("findCommentByID returns the correct comment", () => {
         webp: "./images/avatars/image-ramsesmiron.webp"
       },
       username: "ramsesmiron"
-    }
+    },
+    replies: []
   });
 
   // console.log("Test level top level comment again");
-  expect(findCommentByID(comments as IComment[], 6)).toEqual({
+  expect(findCommentByID(comments, 6)).toEqual({
     id: 6,
     content: "Comment 6",
     createdAt: "1 day ago",
@@ -186,11 +191,11 @@ test("findCommentByID returns the correct comment", () => {
   });
 
   // console.log("Test for ID that does not exist");
-  expect(findCommentByID(comments as IComment[], 42)).toEqual(null);
+  expect(findCommentByID(comments, 42)).toEqual(null);
 
   // console.log("Test for no comments at all");
   const noComments: IComment[] = [];
-  expect(findCommentByID(noComments as IComment[], 42)).toEqual(null);
+  expect(findCommentByID(noComments, 42)).toEqual(null);
 });
 
 export {};
