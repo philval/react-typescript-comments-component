@@ -31,7 +31,11 @@ export default function ReplyForm({
 
   return (
     <>
-      <button style={{ marginBottom: 24 }} onClick={handleToggleReply}>
+      <button
+        style={{ marginBottom: 24 }}
+        onClick={handleToggleReply}
+        data-cy={`toggleReply-${commentID}`}
+      >
         Reply
       </button>
       {toggleReply && (
@@ -43,8 +47,11 @@ export default function ReplyForm({
               placeholder="Add a comment..."
               value={reply}
               onChange={handleChange}
+              data-cy={`inputReply-${commentID}`}
             />
-            <button type="submit">REPLY</button>
+            <button type="submit" data-cy={`submitReply-${commentID}`}>
+              REPLY
+            </button>
           </form>
         </div>
       )}
