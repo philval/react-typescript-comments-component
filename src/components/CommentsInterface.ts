@@ -9,7 +9,7 @@ interface IComment {
   createdAt: string;
   score: number;
   user: IUser;
-  replies?: IComment[];
+  replies: IComment[];
   replyingTo?: string;
 }
 
