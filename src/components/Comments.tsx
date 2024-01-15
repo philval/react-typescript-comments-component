@@ -15,10 +15,36 @@ export function findCommentByID(
       return comment;
     }
 
-    if (comment.replies && comment.replies.length > 0) {
+    if (comment.replies.length > 0) {
       const reply = findCommentByID(comment.replies, commentID);
       if (reply) {
         return reply;
+      }
+    }
+  }
+  return null;
+}
+
+// recursive function to add Reply by ID
+export function addReplyByID(
+  comments: IComment[],
+  commentID: number,
+  newReply: IComment
+): IComment[] | null {
+  for (const comment of comments) {
+    if (comment.id === commentID) {
+      comment.replies.push(newReply);
+      return comments;
+    }
+
+    if (comment.replies.length > 0) {
+      const updatedComments = addReplyByID(
+        comment.replies,
+        commentID,
+        newReply
+      );
+      if (updatedComments) {
+        return updatedComments;
       }
     }
   }
@@ -28,11 +54,11 @@ export function findCommentByID(
 export default function Comments(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [comments, setComments] = useState<Array<IComments>>([]);
+  const [newID, setNewID] = useState<number>(5); // ID for next comment/reply
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // await sleep(1000);
         // could fail in many modes, and would need error handling
         const res = await fetch("./data.json", {
           headers: {
@@ -60,7 +86,7 @@ export default function Comments(): JSX.Element {
 
   function addNewComment(comment: string): void {
     const newComment: IComment = {
-      id: Date.now(), // milliseconds, not necessarily unique
+      id: newID,
       content: comment,
       createdAt: "today", // TODO use UNIX timestamp
       score: 0,
@@ -82,12 +108,14 @@ export default function Comments(): JSX.Element {
         }
       ];
     });
+
+    setNewID(newID + 1);
   }
 
   function addNewReply(comment: string, commentID: number): void {
     console.log("comment text:", comment, "commentID to update:", commentID);
     const newReply: IComment = {
-      id: Date.now(), // milliseconds, not necessarily unique
+      id: newID,
       content: comment,
       createdAt: "today", // TODO use UNIX timestamp
       score: 0,
@@ -103,15 +131,12 @@ export default function Comments(): JSX.Element {
 
     setComments((prevComments: IComments[]): IComments[] => {
       const updatedComments = [...prevComments];
-
-      // new reply never mutates existing state
-      findCommentByID(updatedComments[0].comments, commentID)?.replies?.push(
-        newReply
-      );
-      // console.log("updatedComments:", JSON.stringify(updatedComments, null, 2));
-
+      // mutates after spreading
+      addReplyByID(updatedComments[0].comments, commentID, newReply);
       return updatedComments;
     });
+
+    setNewID(newID + 1);
   }
 
   return (
