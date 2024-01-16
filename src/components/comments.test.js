@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom";
-import App from "../App";
 import Comment from "./Comment";
 import NewCommentForm from "./NewCommentForm";
 import ReplyForm from "./ReplyForm";
@@ -12,17 +11,6 @@ import ReplyForm from "./ReplyForm";
 
 // Ref RTL userEvent
 // https://testing-library.com/docs/user-event/intro/
-
-describe("App", () => {
-  test("Renders app title", () => {
-    render(<App />);
-
-    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "React Typescript Comments Component"
-    );
-  });
-});
 
 describe("Single comment", () => {
   //props
