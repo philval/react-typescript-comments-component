@@ -132,13 +132,20 @@ export default function Comments(): JSX.Element {
     setNewID(newID + 1);
   }
 
-  function addNewReply(comment: string, commentID: number): void {
-    console.log("comment text:", comment, "commentID to update:", commentID);
+  function addNewReply(commentText: string, commentID: number): void {
+    console.log(
+      "comment text:",
+      commentText,
+      "commentID to update:",
+      commentID
+    );
     const newReply: IComment = {
       id: newID,
-      content: comment,
+      content: commentText,
       createdAt: "today", // TODO use UNIX timestamp
       score: 0,
+      replyingTo: findCommentByID(comments[0].comments, commentID)?.user
+        .username,
       user: {
         image: {
           png: "./images/avatars/image-juliusomo.png",

@@ -24,8 +24,9 @@ export default function Comment({
         <p>CommentID: {comment.id}</p>
         <p>Score: {comment.score}</p>
         <img alt="avatar" src={comment.user.image.png}></img>
-        <p>{comment.user.username}</p>
-        <p>{comment.createdAt}</p>
+        <p>User Name: {comment.user.username}</p>
+        <p>Created At: {comment.createdAt}</p>
+        <p>{comment.replyingTo && <p>Replying to: {comment.replyingTo}</p>}</p>
         <p>{comment.content}</p>
         <div>
           <ReplyForm
