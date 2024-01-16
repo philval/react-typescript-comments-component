@@ -36,7 +36,7 @@ describe("Adds a new comment for the user", () => {
 });
 
 describe("Replies to an existing comment", () => {
-  it("replies to commentID 1", () => {
+  it("replies to replies...", () => {
     cy.intercept("http://localhost:3000/data.json", {
       fixture: "data.json"
     }).as("getData");
@@ -50,20 +50,19 @@ describe("Replies to an existing comment", () => {
     cy.get('[data-cy="submitReply-1"]').click();
     cy.contains("Reply One");
 
-    //   const [newID, setNewID] = useState<number>(5); //
-    cy.get('[data-cy="toggleReply-5"]').click();
-    cy.get("[data-cy=inputReply-5]").type("Reply Two");
-    cy.get('[data-cy="submitReply-5"]').click();
+    cy.get('[data-cy="toggleReply-2"]').click();
+    cy.get("[data-cy=inputReply-2]").type("Reply Two");
+    cy.get('[data-cy="submitReply-2"]').click();
     cy.contains("Reply Two");
 
-    cy.get('[data-cy="toggleReply-6"]').click();
-    cy.get("[data-cy=inputReply-6]").type("Reply Three");
-    cy.get('[data-cy="submitReply-6"]').click();
+    cy.get('[data-cy="toggleReply-3"]').click();
+    cy.get("[data-cy=inputReply-3]").type("Reply Three");
+    cy.get('[data-cy="submitReply-3"]').click();
     cy.contains("Reply Three");
 
-    cy.get('[data-cy="toggleReply-5"]').click();
-    cy.get("[data-cy=inputReply-5]").type("Reply Four");
-    cy.get('[data-cy="submitReply-5"]').click();
+    cy.get('[data-cy="toggleReply-2"]').click();
+    cy.get("[data-cy=inputReply-2]").type("Reply Four");
+    cy.get('[data-cy="submitReply-2"]').click();
     cy.contains("Reply Four");
   });
 });

@@ -5,6 +5,25 @@ import NewCommentForm from "./NewCommentForm";
 import { IComments } from "./CommentsInterface";
 import { IComment } from "./CommentsInterface";
 
+function getNewID(comments: IComment[]): number {
+  let highestID = 0;
+
+  for (const comment of comments) {
+    if (comment.id > highestID) {
+      highestID = comment.id;
+    }
+
+    if (comment.replies.length > 0) {
+      const replyID = getNewID(comment.replies);
+      if (replyID > highestID) {
+        highestID = replyID;
+      }
+    }
+  }
+
+  return highestID;
+}
+
 // recursive function to find a comment by ID
 export function findCommentByID(
   comments: IComment[],
@@ -54,7 +73,7 @@ export function addReplyByID(
 export default function Comments(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [comments, setComments] = useState<Array<IComments>>([]);
-  const [newID, setNewID] = useState<number>(5); // ID for next comment/reply
+  const [newID, setNewID] = useState<number>(0); // ID for next comment/reply
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +88,7 @@ export default function Comments(): JSX.Element {
 
         const data = await res.json();
         setComments(data);
+        setNewID(getNewID(data[0].comments) + 1);
       } catch (error) {
         console.log(error);
       } finally {
