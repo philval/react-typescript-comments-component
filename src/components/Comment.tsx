@@ -1,14 +1,16 @@
-import { IComment } from "./CommentsInterface";
+import { IComment, IUser } from "./CommentsInterface";
 import ReplyForm from "../components/ReplyForm";
 
 // NOTE comments JSX is recursive
 
 interface CommentProps {
+  currentUser: IUser;
   comment: IComment;
   addNewReply: (comment: string, commentID: number) => void;
 }
 
 export default function Comment({
+  currentUser,
   comment,
   addNewReply
 }: CommentProps): JSX.Element {
@@ -28,6 +30,9 @@ export default function Comment({
         <p>Created At: {comment.createdAt}</p>
         <p>{comment.replyingTo && <p>Replying to: {comment.replyingTo}</p>}</p>
         <p>{comment.content}</p>
+        {comment.user.username === currentUser.username && (
+          <button>Delete</button>
+        )}
         <div>
           <ReplyForm
             username={comment.user.username}
@@ -44,7 +49,12 @@ export default function Comment({
         {comment.replies &&
           comment.replies.map((reply: IComment) => (
             // call </Comment /> recursively...
-            <Comment key={reply.id} comment={reply} addNewReply={addNewReply} />
+            <Comment
+              key={reply.id}
+              currentUser={currentUser}
+              comment={reply}
+              addNewReply={addNewReply}
+            />
           ))}
       </div>
     </div>

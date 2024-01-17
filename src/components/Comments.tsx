@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Comment from "./Comment";
 import NewCommentForm from "./NewCommentForm";
 
-import { IComments } from "./CommentsInterface";
-import { IComment } from "./CommentsInterface";
+import { IComments, IComment, IUser } from "./CommentsInterface";
+// import { IComment } from "./CommentsInterface";
 
 function getNewID(comments: IComment[]): number {
   let highestID = 0;
@@ -72,6 +72,7 @@ export function addReplyByID(
 
 export default function Comments(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState({} as IUser);
   const [comments, setComments] = useState<Array<IComments>>([]);
   const [newID, setNewID] = useState<number>(0); // ID for next comment/reply
 
@@ -87,6 +88,7 @@ export default function Comments(): JSX.Element {
         });
 
         const data = await res.json();
+        setCurrentUser(data[0].currentUser);
         setComments(data);
         setNewID(getNewID(data[0].comments) + 1);
       } catch (error) {
@@ -173,6 +175,7 @@ export default function Comments(): JSX.Element {
           comments[0].comments.map((comment: IComment) => (
             <Comment
               key={comment.id}
+              currentUser={currentUser}
               comment={comment}
               addNewReply={addNewReply}
             />

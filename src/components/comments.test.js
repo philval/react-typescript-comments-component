@@ -14,6 +14,14 @@ import ReplyForm from "./ReplyForm";
 
 describe("Single comment", () => {
   //props
+  const currentUser = {
+    image: {
+      png: "./images/avatars/image-juliusomo.png",
+      webp: "./images/avatars/image-juliusomo.webp"
+    },
+    username: "johndoe"
+  };
+
   const comment = {
     id: 1000,
     content: "This is the 1st comment",
@@ -30,7 +38,7 @@ describe("Single comment", () => {
   };
 
   test("Displays comment contents", () => {
-    render(<Comment comment={comment} />);
+    render(<Comment currentUser={currentUser} comment={comment} />);
 
     expect(screen.getByText(/1000/)).toBeInTheDocument();
     expect(screen.getByAltText("avatar")).toHaveAttribute(
@@ -39,15 +47,24 @@ describe("Single comment", () => {
     );
     expect(screen.getByText(/johndoe/)).toBeInTheDocument();
     expect(screen.getByText(/5 months ago/)).toBeInTheDocument();
-    expect(screen.getByText("This is the 1st comment")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Reply" })).toHaveTextContent(
-      "Reply"
-    );
+    expect(screen.getByText("This is the 1st comment"));
+    expect(screen.getByRole("button", { name: "Reply" })).toBeInTheDocument();
+    // comment by current user has delete and edit rights
+    expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
   });
 });
 
 describe("Comment reply", () => {
   //props
+
+  const currentUser = {
+    image: {
+      png: "./images/avatars/image-juliusomo.png",
+      webp: "./images/avatars/image-juliusomo.webp"
+    },
+    username: "juliusomo"
+  };
+
   const comment = {
     id: 1,
     content: "This is the comment content",
@@ -65,7 +82,7 @@ describe("Comment reply", () => {
 
   test("Toggles reply form", async () => {
     const user = userEvent.setup();
-    render(<Comment comment={comment} />);
+    render(<Comment currentUser={currentUser} comment={comment} />);
 
     // when asserting that an element isn't there, use queryBy
     expect(screen.queryByRole("textbox")).toBeNull();
@@ -74,9 +91,7 @@ describe("Comment reply", () => {
     // toggle on
     await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByRole("textbox")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "REPLY" })).toHaveTextContent(
-      "REPLY"
-    );
+    expect(screen.getByRole("button", { name: "REPLY" })).toBeInTheDocument();
 
     // toggle off
     await user.click(screen.getByRole("button", { name: "Reply" }));
@@ -107,7 +122,13 @@ describe("Comment reply", () => {
   test("Reply starts with commenter's username", async () => {
     const user = userEvent.setup();
     const addNewReply = jest.fn();
-    render(<Comment comment={comment} addNewReply={addNewReply} />);
+    render(
+      <Comment
+        currentUser={currentUser}
+        comment={comment}
+        addNewReply={addNewReply}
+      />
+    );
     await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByRole("textbox")).toHaveValue("@johndoe, ");
   });
