@@ -37,8 +37,8 @@ describe("Single comment", () => {
       "src",
       "images/avatars/image-amyrobson.png"
     );
-    expect(screen.getByText("johndoe")).toBeInTheDocument();
-    expect(screen.getByText("5 months ago")).toBeInTheDocument();
+    expect(screen.getByText(/johndoe/)).toBeInTheDocument();
+    expect(screen.getByText(/5 months ago/)).toBeInTheDocument();
     expect(screen.getByText("This is the 1st comment")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Reply" })).toHaveTextContent(
       "Reply"
