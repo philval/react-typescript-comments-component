@@ -3,8 +3,8 @@ import Comment from "./Comment";
 import NewCommentForm from "./NewCommentForm";
 
 import { IComments, IComment, IUser } from "./CommentsInterface";
-// import { IComment } from "./CommentsInterface";
 
+// recursive function to find the highest ID
 function getNewID(comments: IComment[]): number {
   let highestID = 0;
 
@@ -70,6 +70,25 @@ export function addReplyByID(
   return null; // not found so iterate again
 }
 
+// recursive function to delete comment by ID
+export function deleteCommentByID(
+  comments: IComment[],
+  commentID: number
+): IComment[] {
+  for (let i = 0; i < comments.length; i++) {
+    if (comments[i].id === commentID) {
+      comments.splice(i, 1);
+      return comments;
+    }
+
+    if (comments[i].replies.length > 0) {
+      comments[i].replies = deleteCommentByID(comments[i].replies, commentID);
+    }
+  }
+
+  return comments;
+}
+
 export default function Comments(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState({} as IUser);
@@ -112,13 +131,7 @@ export default function Comments(): JSX.Element {
       content: comment,
       createdAt: "today", // TODO use UNIX timestamp
       score: 0,
-      user: {
-        image: {
-          png: "./images/avatars/image-juliusomo.png",
-          webp: "./images/avatars/image-juliusomo.webp"
-        },
-        username: "juliusomo"
-      },
+      user: currentUser,
       replies: []
     };
 
@@ -148,13 +161,7 @@ export default function Comments(): JSX.Element {
       score: 0,
       replyingTo: findCommentByID(comments[0].comments, commentID)?.user
         .username,
-      user: {
-        image: {
-          png: "./images/avatars/image-juliusomo.png",
-          webp: "./images/avatars/image-juliusomo.webp"
-        },
-        username: "juliusomo"
-      },
+      user: currentUser,
       replies: []
     };
 
@@ -168,6 +175,15 @@ export default function Comments(): JSX.Element {
     setNewID(newID + 1);
   }
 
+  function deleteComment(commentID: number): void {
+    setComments((prevComments: IComments[]): IComments[] => {
+      const updatedComments = [...prevComments];
+      // mutates after spreading
+      deleteCommentByID(updatedComments[0].comments, commentID);
+      return updatedComments;
+    });
+  }
+
   return (
     <>
       <div>
@@ -178,6 +194,7 @@ export default function Comments(): JSX.Element {
               currentUser={currentUser}
               comment={comment}
               addNewReply={addNewReply}
+              deleteComment={deleteComment}
             />
           ))}
       </div>

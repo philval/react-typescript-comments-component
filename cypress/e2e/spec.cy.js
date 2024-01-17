@@ -66,3 +66,39 @@ describe("Replies to an existing comment", () => {
     cy.contains("Reply Four");
   });
 });
+
+describe("Deletes New comments and replies", () => {
+  it("deletes a new comment", () => {
+    cy.intercept("http://localhost:3000/data.json", {
+      fixture: "data.json"
+    }).as("getData");
+
+    cy.visit("http://localhost:3000/");
+    cy.wait("@getData");
+
+    // setup add a new comment to delete
+    cy.get('[data-cy="inputNewComment"]').type("Delete this comment");
+    cy.get('[data-cy="submitNewComment"]').click();
+
+    cy.get('[data-cy="deleteComment-2"]').click();
+    cy.contains("Delete this comment").should("not.exist");
+  });
+
+  it("deletes a new reply", () => {
+    cy.intercept("http://localhost:3000/data.json", {
+      fixture: "data.json"
+    }).as("getData");
+
+    cy.visit("http://localhost:3000/");
+    cy.wait("@getData");
+
+    // setup add a new reply to delete
+    cy.get('[data-cy="toggleReply-1"]').click();
+    cy.get("[data-cy=inputReply-1]").type("Delete this reply");
+    cy.get('[data-cy="submitReply-1"]').click();
+    cy.contains("Delete this reply");
+
+    cy.get('[data-cy="deleteComment-2"]').click();
+    cy.contains("Delete this reply").should("not.exist");
+  });
+});

@@ -52,6 +52,21 @@ describe("Single comment", () => {
     // comment by current user has delete and edit rights
     expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
   });
+
+  test("Deletes current comment", async () => {
+    const user = userEvent.setup();
+    const deleteComment = jest.fn();
+    render(
+      <Comment
+        currentUser={currentUser}
+        comment={comment}
+        deleteComment={deleteComment}
+      />
+    );
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    expect(deleteComment).toHaveBeenCalledTimes(1);
+    expect(deleteComment).toHaveBeenCalledWith(1000);
+  });
 });
 
 describe("Comment reply", () => {

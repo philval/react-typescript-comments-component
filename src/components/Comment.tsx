@@ -7,13 +7,19 @@ interface CommentProps {
   currentUser: IUser;
   comment: IComment;
   addNewReply: (comment: string, commentID: number) => void;
+  deleteComment: (commentID: number) => void;
 }
 
 export default function Comment({
   currentUser,
   comment,
-  addNewReply
+  addNewReply,
+  deleteComment
 }: CommentProps): JSX.Element {
+  function handleDelete() {
+    deleteComment(comment.id);
+  }
+
   return (
     <div key={comment.id}>
       <div
@@ -31,7 +37,12 @@ export default function Comment({
         <p>{comment.replyingTo && <p>Replying to: {comment.replyingTo}</p>}</p>
         <p>{comment.content}</p>
         {comment.user.username === currentUser.username && (
-          <button>Delete</button>
+          <button
+            onClick={handleDelete}
+            data-cy={`deleteComment-${comment.id}`}
+          >
+            Delete
+          </button>
         )}
         <div>
           <ReplyForm
@@ -54,6 +65,7 @@ export default function Comment({
               currentUser={currentUser}
               comment={reply}
               addNewReply={addNewReply}
+              deleteComment={deleteComment}
             />
           ))}
       </div>
