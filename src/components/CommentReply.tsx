@@ -10,24 +10,30 @@ export default function CommentReply({
   addNewReply
 }: CommentReplyProps): JSX.Element {
   return (
-    <div
-      style={{
-        backgroundColor: "#cffafe",
-        padding: 12,
-        marginBottom: 24
-      }}
-    >
-      <p>replyID: {reply.id}</p>
-      <p>Score: {reply.score}</p>
-      <img src={reply.user.image.png} alt=""></img>
-      <p>{reply.user.username}</p>
-      <p>{reply.createdAt}</p>
-      <p>{reply.content}</p>
-      <ReplyForm
-        username={reply.user.username}
-        commentID={reply.id}
-        addNewReply={addNewReply}
-      />
+    <div className="card-container">
+      <div className="card-score">
+        <div className="card-score-widget">
+          <div>+</div>
+          <p>{reply.score}</p>
+          <div>-</div>
+        </div>
+      </div>
+      <div className="card-user">
+        <p>replyID: {reply.id}</p>
+        <img src={reply.user.image.png} alt=""></img>
+        <p>{reply.user.username}</p>
+        <p>{reply.createdAt}</p>
+      </div>
+      <div className="card-comment">
+        <p>{reply.content}</p>
+      </div>
+      <div className="card-actions">
+        <ReplyForm
+          username={reply.user.username}
+          commentID={reply.id}
+          addNewReply={addNewReply}
+        />
+      </div>
     </div>
   );
 }

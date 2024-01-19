@@ -31,11 +31,7 @@ export default function ReplyForm({
 
   return (
     <>
-      <button
-        style={{ marginBottom: 24 }}
-        onClick={handleToggleReply}
-        data-cy={`toggleReply-${commentID}`}
-      >
+      <button onClick={handleToggleReply} data-cy={`toggleReply-${commentID}`}>
         Reply
       </button>
       {toggleReply && (

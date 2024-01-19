@@ -21,21 +21,25 @@ export default function Comment({
   }
 
   return (
-    <div key={comment.id}>
-      <div
-        style={{
-          backgroundColor: "#e2e8f0",
-          padding: 12,
-          marginBottom: 24
-        }}
-      >
+    <div key={comment.id} className="card-container">
+      <div className="card-score">
+        <div className="card-score-widget">
+          <div>+</div>
+          <p>{comment.score}</p>
+          <div>-</div>
+        </div>
+      </div>
+      <div className="card-user">
         <p>CommentID: {comment.id}</p>
-        <p>Score: {comment.score}</p>
         <img alt="avatar" src={comment.user.image.png}></img>
         <p>User Name: {comment.user.username}</p>
         <p>Created At: {comment.createdAt}</p>
-        <p>{comment.replyingTo && <p>Replying to: {comment.replyingTo}</p>}</p>
+        {comment.replyingTo && <p>Replying to: {comment.replyingTo}</p>}
+      </div>
+      <div className="card-comment">
         <p>{comment.content}</p>
+      </div>
+      <div className="card-actions">
         {comment.user.username === currentUser.username && (
           <button
             onClick={handleDelete}
@@ -52,11 +56,7 @@ export default function Comment({
           />
         </div>
       </div>
-      <div
-        style={{
-          marginLeft: 24
-        }}
-      >
+      <div className="card-replies">
         {comment.replies &&
           comment.replies.map((reply: IComment) => (
             // call </Comment /> recursively...
