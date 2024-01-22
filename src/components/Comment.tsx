@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { IComment, IUser } from "./CommentsInterface";
 import ReplyForm from "../components/ReplyForm";
 
@@ -16,6 +17,13 @@ export default function Comment({
   addNewReply,
   deleteComment
 }: CommentProps): JSX.Element {
+  // state for toggling reply form
+  const [toggleReply, setToggleReply] = useState<boolean>(false);
+
+  const handleToggleReply = () => {
+    setToggleReply(!toggleReply);
+  };
+
   function handleDelete() {
     deleteComment(comment.id);
   }
@@ -29,6 +37,7 @@ export default function Comment({
           <div>-</div>
         </div>
       </div>
+
       <div className="card-user">
         <p>CommentID: {comment.id}</p>
         <img alt="avatar" src={comment.user.image.png}></img>
@@ -36,10 +45,18 @@ export default function Comment({
         <p>Created At: {comment.createdAt}</p>
         {comment.replyingTo && <p>Replying to: {comment.replyingTo}</p>}
       </div>
+
       <div className="card-comment">
         <p>{comment.content}</p>
       </div>
+
       <div className="card-actions">
+        <button
+          onClick={handleToggleReply}
+          data-cy={`toggleReply-${comment.id}`}
+        >
+          Reply
+        </button>
         {comment.user.username === currentUser.username && (
           <button
             onClick={handleDelete}
@@ -48,14 +65,19 @@ export default function Comment({
             Delete
           </button>
         )}
-        <div>
+      </div>
+
+      <div className="card-reply-form">
+        {toggleReply && (
           <ReplyForm
+            handleToggleReply={handleToggleReply}
             username={comment.user.username}
             commentID={comment.id}
             addNewReply={addNewReply}
           />
-        </div>
+        )}
       </div>
+
       <div className="card-replies">
         {comment.replies &&
           comment.replies.map((reply: IComment) => (
