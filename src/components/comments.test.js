@@ -115,9 +115,7 @@ describe("Comment reply", () => {
   });
 
   test("Reply form displays User avatar", async () => {
-    const user = userEvent.setup();
     render(<ReplyForm />);
-    await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByAltText("avatar")).toHaveAttribute(
       "src",
       "images/avatars/image-juliusomo.png"
@@ -125,9 +123,7 @@ describe("Comment reply", () => {
   });
 
   test("Reply form has placeholder text", async () => {
-    const user = userEvent.setup();
     render(<ReplyForm />);
-    await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByRole("textbox")).toHaveAttribute(
       "placeholder",
       "Add a comment..."
