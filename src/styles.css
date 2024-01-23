@@ -11,6 +11,25 @@ img {
   height: 3rem;
 }
 
+.button-action {
+  border: none;
+  background-color: white;
+  color: #5457b4;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.button-form {
+  border: none;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  background-color: #5457b4;
+  color: white;
+  font-size: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
 .App {
   font-family: "Rubik", sans-serif;
   text-align: left;
