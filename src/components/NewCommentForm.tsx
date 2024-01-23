@@ -31,8 +31,13 @@ export default function NewCommentForm({
             data-cy="inputNewComment"
             rows={4}
           />
-          <button type="submit" data-cy="submitNewComment">
-            SEND
+          <button
+            className="button-form"
+            type="submit"
+            data-cy="submitNewComment"
+            data-testid="submitNewComment"
+          >
+            Send
           </button>
         </form>
       </div>
