@@ -37,8 +37,13 @@ export default function ReplyForm({
             data-cy={`inputReply-${commentID}`}
             rows={4}
           />
-          <button type="submit" data-cy={`submitReply-${commentID}`}>
-            REPLY
+          <button
+            className="button-form"
+            type="submit"
+            data-cy={`submitReply-${commentID}`}
+            data-testid={`submitReply-${commentID}`}
+          >
+            Reply
           </button>
         </form>
       </div>
