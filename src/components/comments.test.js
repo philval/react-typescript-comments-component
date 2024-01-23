@@ -48,8 +48,6 @@ describe("Single comment", () => {
     expect(screen.getByText(/johndoe/)).toBeInTheDocument();
     expect(screen.getByText(/5 months ago/)).toBeInTheDocument();
     expect(screen.getByText("This is the 1st comment"));
-    expect(screen.getByRole("button", { name: "Reply" })).toBeInTheDocument();
-    // comment by current user has delete and edit rights
     expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
   });
 
@@ -101,17 +99,17 @@ describe("Comment reply", () => {
 
     // when asserting that an element isn't there, use queryBy
     expect(screen.queryByRole("textbox")).toBeNull();
-    expect(screen.queryByRole("button", { name: "REPLY" })).toBeNull();
+    expect(screen.queryByTestId("submitReply-1")).toBeNull();
 
     // toggle on
-    await user.click(screen.getByRole("button", { name: "Reply" }));
+    await user.click(screen.getByTestId("toggleReply-1"));
     expect(screen.getByRole("textbox")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "REPLY" })).toBeInTheDocument();
+    expect(screen.getByTestId("submitReply-1")).toBeInTheDocument();
 
     // toggle off
-    await user.click(screen.getByRole("button", { name: "Reply" }));
+    await user.click(screen.getByTestId("toggleReply-1"));
     expect(screen.queryByRole("textbox")).toBeNull();
-    expect(screen.queryByRole("button", { name: "REPLY" })).toBeNull();
+    expect(screen.queryByTestId("submitReply-1")).toBeNull();
   });
 
   test("Reply form displays User avatar", async () => {
@@ -167,7 +165,7 @@ describe("New comment", () => {
     const user = userEvent.setup();
     render(<NewCommentForm addNewComment={addNewComment} />);
     await user.type(screen.getByRole("textbox"), "The Quick Brown Fox");
-    await user.click(screen.getByRole("button", { name: "SEND" }));
+    await user.click(screen.getByTestId("submitNewComment"));
     expect(addNewComment).toHaveBeenCalledTimes(1);
     expect(addNewComment).toHaveBeenCalledWith("The Quick Brown Fox");
     expect(screen.getByRole("textbox")).toHaveValue("");
