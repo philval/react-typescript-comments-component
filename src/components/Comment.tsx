@@ -51,16 +51,24 @@ export default function Comment({
       </div>
 
       <div className="card-actions">
-        <button
-          onClick={handleToggleReply}
-          data-cy={`toggleReply-${comment.id}`}
-        >
-          Reply
-        </button>
+        {/* a user can not reply to own comments */}
+        {comment.user.username !== currentUser.username && (
+          <button
+            className="button-action"
+            onClick={handleToggleReply}
+            data-cy={`toggleReply-${comment.id}`}
+            data-testid={`toggleReply-${comment.id}`}
+          >
+            Reply
+          </button>
+        )}
+        {/* only a user can delete own comments */}
         {comment.user.username === currentUser.username && (
           <button
+            className="button-action"
             onClick={handleDelete}
             data-cy={`deleteComment-${comment.id}`}
+            data-testid={`deleteComment-${comment.id}`}
           >
             Delete
           </button>
