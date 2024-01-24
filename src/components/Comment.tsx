@@ -32,9 +32,9 @@ export default function Comment({
     <div key={comment.id} className="card-container">
       <div className="card-score">
         <div className="card-score-widget">
-          <div>+</div>
-          <p>{comment.score}</p>
-          <div>-</div>
+          <button className="button-score">+</button>
+          <div className="card-score-number">{comment.score}</div>
+          <button className="button-score">-</button>
         </div>
       </div>
 
