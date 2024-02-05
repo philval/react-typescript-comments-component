@@ -67,7 +67,7 @@ export function addReplyByID(
       }
     }
   }
-  return null; // not found so iterate again
+  return null;
 }
 
 // recursive function to delete comment by ID
@@ -87,6 +87,31 @@ export function deleteCommentByID(
   }
 
   return comments;
+}
+
+// recursive function to edit comment by ID
+export function editCommentByID(
+  comments: IComment[],
+  commentID: number,
+  newContent: string
+): IComment[] | null {
+  for (const comment of comments) {
+    if (comment.id === commentID) {
+      comment.content = newContent;
+      return comments;
+    }
+    if (comment.replies.length > 0) {
+      const updatedComments = editCommentByID(
+        comment.replies,
+        commentID,
+        newContent
+      );
+      if (updatedComments) {
+        return updatedComments;
+      }
+    }
+  }
+  return null;
 }
 
 export default function Comments(): JSX.Element {
@@ -184,10 +209,19 @@ export default function Comments(): JSX.Element {
     });
   }
 
+  function editComment(commentID: number, content: string): void {
+    setComments((prevComments: IComments[]): IComments[] => {
+      const updatedComments = [...prevComments];
+      // mutates after spreading
+      editCommentByID(updatedComments[0].comments, commentID, content);
+      return updatedComments;
+    });
+  }
+
   return (
     <>
       <div>
-        {comments.length !== 0 &&
+        {comments.length > 0 &&
           comments[0].comments.map((comment: IComment) => (
             <Comment
               key={comment.id}
@@ -195,6 +229,7 @@ export default function Comments(): JSX.Element {
               comment={comment}
               addNewReply={addNewReply}
               deleteComment={deleteComment}
+              editComment={editComment}
             />
           ))}
       </div>

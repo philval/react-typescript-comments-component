@@ -5,6 +5,7 @@ import "@testing-library/jest-dom";
 import Comment from "./Comment";
 import NewCommentForm from "./NewCommentForm";
 import ReplyForm from "./ReplyForm";
+import EditForm from "./EditForm";
 
 // Ref RTL best practices
 // https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
@@ -24,7 +25,7 @@ describe("Single comment", () => {
 
   const comment = {
     id: 1000,
-    content: "This is the 1st comment",
+    content: "This is the 1st comment. ",
     createdAt: "5 months ago",
     score: 42,
     user: {
@@ -47,8 +48,9 @@ describe("Single comment", () => {
     );
     expect(screen.getByText(/johndoe/)).toBeInTheDocument();
     expect(screen.getByText(/5 months ago/)).toBeInTheDocument();
-    expect(screen.getByText("This is the 1st comment"));
+    expect(screen.getByText(/This is the 1st comment/));
     expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
   });
 
   test("Deletes current comment", async () => {
@@ -64,6 +66,47 @@ describe("Single comment", () => {
     await user.click(screen.getByRole("button", { name: "Delete" }));
     expect(deleteComment).toHaveBeenCalledTimes(1);
     expect(deleteComment).toHaveBeenCalledWith(1000);
+  });
+
+  test("Toggles edit form", async () => {
+    const user = userEvent.setup();
+    render(<Comment currentUser={currentUser} comment={comment} />);
+
+    // when asserting that an element isn't there, use queryBy
+    expect(screen.queryByRole("textbox")).toBeNull();
+    expect(screen.queryByTestId("submitEdit-1000")).toBeNull();
+
+    // toggle on
+    await user.click(screen.getByTestId("toggleEdit-1000"));
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(screen.getByTestId("submitEdit-1000")).toBeInTheDocument();
+
+    // toggle off
+    await user.click(screen.getByTestId("toggleEdit-1000"));
+    expect(screen.queryByRole("textbox")).toBeNull();
+    expect(screen.queryByTestId("submitReply-1000")).toBeNull();
+  });
+
+  test("Edits current comment", async () => {
+    const user = userEvent.setup();
+    const editComment = jest.fn();
+    const handleToggleEdit = jest.fn();
+    render(
+      <EditForm
+        commentID={comment.id}
+        content={comment.content}
+        handleToggleEdit={handleToggleEdit}
+        editComment={editComment}
+      />
+    );
+    await user.type(screen.getByRole("textbox"), "This is the edited text.");
+    await user.click(screen.getByRole("button", { name: "Update" }));
+    expect(handleToggleEdit).toHaveBeenCalledTimes(1);
+    expect(editComment).toHaveBeenCalledTimes(1);
+    expect(editComment).toHaveBeenCalledWith(
+      1000,
+      "This is the 1st comment. This is the edited text."
+    );
   });
 });
 

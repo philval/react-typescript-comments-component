@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IComment, IUser } from "./CommentsInterface";
 import ReplyForm from "../components/ReplyForm";
+import EditForm from "../components/EditForm";
 
 // NOTE comments JSX is recursive
 
@@ -9,21 +10,29 @@ interface CommentProps {
   comment: IComment;
   addNewReply: (comment: string, commentID: number) => void;
   deleteComment: (commentID: number) => void;
+  editComment: (commentID: number, content: string) => void;
 }
 
 export default function Comment({
   currentUser,
   comment,
   addNewReply,
-  deleteComment
+  deleteComment,
+  editComment
 }: CommentProps): JSX.Element {
   // state for toggling reply form
   const [toggleReply, setToggleReply] = useState<boolean>(false);
+  const [toggleEdit, setToggleEdit] = useState<boolean>(false);
 
   const handleToggleReply = () => {
     setToggleReply(!toggleReply);
   };
 
+  const handleToggleEdit = () => {
+    setToggleEdit(!toggleEdit);
+  };
+
+  // TODO add modal to confirm delete
   function handleDelete() {
     deleteComment(comment.id);
   }
@@ -46,10 +55,6 @@ export default function Comment({
         {comment.replyingTo && <p>Replying to: {comment.replyingTo}</p>}
       </div>
 
-      <div className="card-comment">
-        <p>{comment.content}</p>
-      </div>
-
       <div className="card-actions">
         {/* a user can not reply to own comments */}
         {comment.user.username !== currentUser.username && (
@@ -62,6 +67,7 @@ export default function Comment({
             Reply
           </button>
         )}
+
         {/* only a user can delete own comments */}
         {comment.user.username === currentUser.username && (
           <button
@@ -73,7 +79,38 @@ export default function Comment({
             Delete
           </button>
         )}
+
+        {/* only a user can edit own comments */}
+        {comment.user.username === currentUser.username && (
+          <button
+            className="button-action"
+            onClick={handleToggleEdit}
+            data-cy={`toggleEdit-${comment.id}`}
+            data-testid={`toggleEdit-${comment.id}`}
+          >
+            Edit
+          </button>
+        )}
       </div>
+
+      {!toggleEdit && (
+        <div className="card-comment">
+          <p>{comment.content}</p>
+        </div>
+      )}
+
+      {toggleEdit && (
+        <div className="card-comment">
+          <EditForm
+            handleToggleEdit={handleToggleEdit}
+            // TODO is username needed?
+            username={comment.user.username}
+            commentID={comment.id}
+            editComment={editComment}
+            content={comment.content}
+          />
+        </div>
+      )}
 
       <div className="card-reply-form">
         {toggleReply && (
@@ -87,7 +124,7 @@ export default function Comment({
       </div>
 
       <div className="card-replies">
-        {comment.replies &&
+        {comment.replies.length > 0 &&
           comment.replies.map((reply: IComment) => (
             // call </Comment /> recursively...
             <Comment
@@ -96,6 +133,7 @@ export default function Comment({
               comment={reply}
               addNewReply={addNewReply}
               deleteComment={deleteComment}
+              editComment={editComment}
             />
           ))}
       </div>
