@@ -1,6 +1,5 @@
 import { useState } from "react";
 interface EditFormProps {
-  username: string;
   commentID: number;
   handleToggleEdit: () => void;
   editComment: (commentID: number, content: string) => void;
@@ -8,7 +7,6 @@ interface EditFormProps {
 }
 
 export default function ReplyForm({
-  // username,
   commentID,
   content,
   handleToggleEdit,

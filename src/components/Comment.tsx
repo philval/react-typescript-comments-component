@@ -103,8 +103,6 @@ export default function Comment({
         <div className="card-comment">
           <EditForm
             handleToggleEdit={handleToggleEdit}
-            // TODO is username needed?
-            username={comment.user.username}
             commentID={comment.id}
             editComment={editComment}
             content={comment.content}
