@@ -173,12 +173,6 @@ export default function Comments(): JSX.Element {
   }
 
   function addNewReply(commentText: string, commentID: number): void {
-    console.log(
-      "comment text:",
-      commentText,
-      "commentID to update:",
-      commentID
-    );
     const newReply: IComment = {
       id: newID,
       content: commentText,
