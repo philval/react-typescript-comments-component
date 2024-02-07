@@ -108,6 +108,16 @@ describe("Single comment", () => {
       "This is the 1st comment. This is the edited text."
     );
   });
+
+  test("Can not vote on own comments", () => {
+    render(<Comment currentUser={currentUser} comment={comment} />);
+    expect(screen.queryByRole("button", { name: "+" })).toHaveAttribute(
+      "disabled"
+    );
+    expect(screen.queryByRole("button", { name: "-" })).toHaveAttribute(
+      "disabled"
+    );
+  });
 });
 
 describe("Comment reply", () => {

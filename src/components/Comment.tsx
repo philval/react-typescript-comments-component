@@ -24,6 +24,10 @@ export default function Comment({
   const [toggleReply, setToggleReply] = useState<boolean>(false);
   const [toggleEdit, setToggleEdit] = useState<boolean>(false);
 
+  function isUser() {
+    return comment.user.username === currentUser.username;
+  }
+
   const handleToggleReply = () => {
     setToggleReply(!toggleReply);
   };
@@ -41,9 +45,21 @@ export default function Comment({
     <div key={comment.id} className="card-container">
       <div className="card-score">
         <div className="card-score-widget">
-          <button className="button-score">+</button>
+          <button
+            className="button-score"
+            type="button"
+            disabled={isUser() ? true : false}
+          >
+            +
+          </button>
           <div className="card-score-number">{comment.score}</div>
-          <button className="button-score">-</button>
+          <button
+            className="button-score"
+            type="button"
+            disabled={isUser() ? true : false}
+          >
+            -
+          </button>
         </div>
       </div>
 
@@ -57,7 +73,7 @@ export default function Comment({
 
       <div className="card-actions">
         {/* a user can not reply to own comments */}
-        {comment.user.username !== currentUser.username && (
+        {!isUser() && (
           <button
             className="button-action"
             onClick={handleToggleReply}
@@ -69,7 +85,7 @@ export default function Comment({
         )}
 
         {/* only a user can delete own comments */}
-        {comment.user.username === currentUser.username && (
+        {isUser() && (
           <button
             className="button-action"
             onClick={handleDelete}
@@ -81,7 +97,7 @@ export default function Comment({
         )}
 
         {/* only a user can edit own comments */}
-        {comment.user.username === currentUser.username && (
+        {isUser() && (
           <button
             className="button-action"
             onClick={handleToggleEdit}
