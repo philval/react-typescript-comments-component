@@ -75,17 +75,18 @@ export function deleteCommentByID(
   comments: IComment[],
   commentID: number
 ): IComment[] {
-  for (let i = 0; i < comments.length; i++) {
-    if (comments[i].id === commentID) {
-      comments.splice(i, 1);
+  let index = 0;
+  for (const comment of comments) {
+    if (comment.id === commentID) {
+      comments.splice(index, 1);
       return comments;
     }
 
-    if (comments[i].replies.length > 0) {
-      comments[i].replies = deleteCommentByID(comments[i].replies, commentID);
+    if (comment.replies.length > 0) {
+      comment.replies = deleteCommentByID(comment.replies, commentID);
     }
+    index++;
   }
-
   return comments;
 }
 
