@@ -225,4 +225,49 @@ describe("New comment", () => {
   });
 });
 
+describe("Comment voting", () => {
+  //props
+  const currentUser = {
+    image: {
+      png: "./images/avatars/image-juliusomo.png",
+      webp: "./images/avatars/image-juliusomo.webp"
+    },
+    username: "user1"
+  };
+
+  const comment = {
+    id: 42,
+    content: "Voting on this comment by another user. ",
+    createdAt: "5 months ago",
+    score: 7,
+    user: {
+      image: {
+        png: "images/avatars/image-amyrobson.png",
+        webp: "images/avatars/image-amyrobson.webp"
+      },
+      username: "user2"
+    },
+    replies: []
+  };
+
+  test("Can vote on a comment", async () => {
+    const updateScore = jest.fn();
+    const user = userEvent.setup();
+    render(
+      <Comment
+        currentUser={currentUser}
+        comment={comment}
+        updateScore={updateScore}
+      />
+    );
+    await user.click(screen.getByRole("button", { name: "+" }));
+    expect(updateScore).toHaveBeenCalledTimes(1);
+    expect(updateScore).toHaveBeenCalledWith(42, 1);
+    updateScore.mockClear();
+    await user.click(screen.getByRole("button", { name: "-" }));
+    expect(updateScore).toHaveBeenCalledTimes(1);
+    expect(updateScore).toHaveBeenCalledWith(42, -1);
+  });
+});
+
 export {};

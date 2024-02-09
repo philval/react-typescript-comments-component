@@ -115,6 +115,30 @@ export function editCommentByID(
   return null;
 }
 
+export function updateCommentScoreByID(
+  comments: IComment[],
+  commentID: number,
+  vote: number
+): IComment[] | null {
+  for (const comment of comments) {
+    if (comment.id === commentID) {
+      comment.score = comment.score + vote;
+      return comments;
+    }
+    if (comment.replies.length > 0) {
+      const updatedComments = updateCommentScoreByID(
+        comment.replies,
+        commentID,
+        vote
+      );
+      if (updatedComments) {
+        return updatedComments;
+      }
+    }
+  }
+  return null;
+}
+
 export default function Comments(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState({} as IUser);
@@ -213,6 +237,15 @@ export default function Comments(): JSX.Element {
     });
   }
 
+  function updateScore(commentID: number, vote: number): void {
+    setComments((prevComments: IComments[]): IComments[] => {
+      const updatedComments = structuredClone(prevComments);
+      // mutates after spreading
+      updateCommentScoreByID(updatedComments[0].comments, commentID, vote);
+      return updatedComments;
+    });
+  }
+
   return (
     <>
       <div>
@@ -225,6 +258,7 @@ export default function Comments(): JSX.Element {
               addNewReply={addNewReply}
               deleteComment={deleteComment}
               editComment={editComment}
+              updateScore={updateScore}
             />
           ))}
       </div>

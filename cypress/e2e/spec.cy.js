@@ -90,3 +90,16 @@ describe("Edits New comments and replies", () => {
     cy.contains("Editing now. @commenter1, Edit this reply.");
   });
 });
+
+describe("Votes on comment scores", () => {
+  it("Up votes on the score", () => {
+    cy.contains("42");
+    cy.get('[data-cy="upVote-1"]').click();
+    cy.contains("43");
+  });
+  it("Down votes on the score", () => {
+    cy.contains("42");
+    cy.get('[data-cy="downVote-1"]').click();
+    cy.contains("41");
+  });
+});

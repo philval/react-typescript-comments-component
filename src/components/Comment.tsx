@@ -11,6 +11,7 @@ interface CommentProps {
   addNewReply: (comment: string, commentID: number) => void;
   deleteComment: (commentID: number) => void;
   editComment: (commentID: number, content: string) => void;
+  updateScore(commentID: number, vote: number): void;
 }
 
 export default function Comment({
@@ -18,7 +19,8 @@ export default function Comment({
   comment,
   addNewReply,
   deleteComment,
-  editComment
+  editComment,
+  updateScore
 }: CommentProps): JSX.Element {
   // state for toggling reply form
   const [toggleReply, setToggleReply] = useState<boolean>(false);
@@ -41,6 +43,10 @@ export default function Comment({
     deleteComment(comment.id);
   }
 
+  function handleVote(vote: number): void {
+    updateScore(comment.id, vote);
+  }
+
   return (
     <div key={comment.id} className="card-container">
       <div className="card-score">
@@ -49,6 +55,8 @@ export default function Comment({
             className="button-score"
             type="button"
             disabled={isUser() ? true : false}
+            onClick={() => handleVote(1)}
+            data-cy={`upVote-${comment.id}`}
           >
             +
           </button>
@@ -57,6 +65,8 @@ export default function Comment({
             className="button-score"
             type="button"
             disabled={isUser() ? true : false}
+            onClick={() => handleVote(-1)}
+            data-cy={`downVote-${comment.id}`}
           >
             -
           </button>
@@ -148,6 +158,7 @@ export default function Comment({
               addNewReply={addNewReply}
               deleteComment={deleteComment}
               editComment={editComment}
+              updateScore={updateScore}
             />
           ))}
       </div>
