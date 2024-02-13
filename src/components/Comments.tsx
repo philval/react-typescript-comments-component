@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import Comment from "./Comment";
 import NewCommentForm from "./NewCommentForm";
-
-import { IComments, IComment, IUser } from "./CommentsInterface";
+import { IComment, IUser } from "./CommentsInterface";
 
 // recursive function to find the highest ID
-function getNewID(comments: IComment[]): number {
+function getHighestID(comments: IComment[]): number {
   let highestID = 0;
 
   for (const comment of comments) {
@@ -14,21 +13,19 @@ function getNewID(comments: IComment[]): number {
     }
 
     if (comment.replies.length > 0) {
-      const replyID = getNewID(comment.replies);
+      const replyID = getHighestID(comment.replies);
       if (replyID > highestID) {
         highestID = replyID;
       }
     }
   }
-
   return highestID;
 }
 
-function sortComments(comments: IComments[]): IComments[] {
-  const currentUser = comments[0].currentUser;
-  const commentsToSort = structuredClone(comments)[0].comments;
+function sortComments(comments: IComment[]): IComment[] {
+  const commentsToSort = structuredClone(comments);
   const sortedComments = commentsToSort.sort((a, b) => b.score - a.score);
-  return [{ currentUser, comments: sortedComments }];
+  return sortedComments;
 }
 
 // recursive function to find a comment by ID
@@ -149,7 +146,7 @@ export function updateCommentScoreByID(
 export default function Comments(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState({} as IUser);
-  const [comments, setComments] = useState<Array<IComments>>([]);
+  const [comments, setComments] = useState<Array<IComment>>([]);
   const [newID, setNewID] = useState<number>(0); // ID for next comment/reply
 
   useEffect(() => {
@@ -165,8 +162,8 @@ export default function Comments(): JSX.Element {
 
         const data = await res.json();
         setCurrentUser(data[0].currentUser);
-        setComments(data);
-        setNewID(getNewID(data[0].comments) + 1);
+        setComments(data[0].comments);
+        setNewID(getHighestID(data[0].comments) + 1);
       } catch (error) {
         console.log(error);
       } finally {
@@ -192,12 +189,12 @@ export default function Comments(): JSX.Element {
       replies: []
     };
 
-    setComments((prevComments: IComments[]): IComments[] => {
-      const currentUser = comments[0].currentUser;
-      const copiedComments = structuredClone(prevComments)[0].comments;
+    setComments((prevComments: IComment[]): IComment[] => {
+      const copiedComments = structuredClone(prevComments);
       const addedComment = [...copiedComments, newComment];
+      // order of comments may change
       const sortedComments = addedComment.sort((a, b) => b.score - a.score);
-      return [{ currentUser, comments: sortedComments }];
+      return sortedComments;
     });
 
     setNewID(newID + 1);
@@ -209,15 +206,14 @@ export default function Comments(): JSX.Element {
       content: commentText,
       createdAt: "today", // TODO use UNIX timestamp
       score: 0,
-      replyingTo: findCommentByID(comments[0].comments, commentID)?.user
-        .username,
+      replyingTo: findCommentByID(comments, commentID)?.user.username,
       user: currentUser,
       replies: []
     };
 
-    setComments((prevComments: IComments[]): IComments[] => {
+    setComments((prevComments: IComment[]): IComment[] => {
       const updatedComments = structuredClone(prevComments);
-      addReplyByID(updatedComments[0].comments, commentID, newReply);
+      addReplyByID(updatedComments, commentID, newReply);
       return updatedComments;
     });
 
@@ -225,26 +221,26 @@ export default function Comments(): JSX.Element {
   }
 
   function deleteComment(commentID: number): void {
-    setComments((prevComments: IComments[]): IComments[] => {
+    setComments((prevComments: IComment[]): IComment[] => {
       const updatedComments = structuredClone(prevComments);
-      deleteCommentByID(updatedComments[0].comments, commentID);
-      return sortComments(updatedComments);
+      deleteCommentByID(updatedComments, commentID);
+      return sortComments(updatedComments); // order of comments may change
     });
   }
 
   function editComment(commentID: number, content: string): void {
-    setComments((prevComments: IComments[]): IComments[] => {
+    setComments((prevComments: IComment[]): IComment[] => {
       const updatedComments = structuredClone(prevComments);
-      editCommentByID(updatedComments[0].comments, commentID, content);
+      editCommentByID(updatedComments, commentID, content);
       return updatedComments;
     });
   }
 
   function updateScore(commentID: number, vote: number): void {
-    setComments((prevComments: IComments[]): IComments[] => {
+    setComments((prevComments: IComment[]): IComment[] => {
       const updatedComments = structuredClone(prevComments);
-      updateCommentScoreByID(updatedComments[0].comments, commentID, vote);
-      return sortComments(updatedComments);
+      updateCommentScoreByID(updatedComments, commentID, vote);
+      return sortComments(updatedComments); // order of comments may change
     });
   }
 
@@ -252,7 +248,7 @@ export default function Comments(): JSX.Element {
     <>
       <div>
         {comments.length > 0 &&
-          comments[0].comments.map((comment: IComment) => (
+          comments.map((comment: IComment) => (
             <Comment
               key={comment.id}
               currentUser={currentUser}
