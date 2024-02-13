@@ -24,6 +24,13 @@ function getNewID(comments: IComment[]): number {
   return highestID;
 }
 
+function sortComments(comments: IComments[]): IComments[] {
+  const currentUser = comments[0].currentUser;
+  const commentsToSort = structuredClone(comments)[0].comments;
+  const sortedComments = commentsToSort.sort((a, b) => b.score - a.score);
+  return [{ currentUser, comments: sortedComments }];
+}
+
 // recursive function to find a comment by ID
 export function findCommentByID(
   comments: IComment[],
@@ -186,12 +193,11 @@ export default function Comments(): JSX.Element {
     };
 
     setComments((prevComments: IComments[]): IComments[] => {
-      return [
-        {
-          ...prevComments[0],
-          comments: [...prevComments[0].comments, newComment]
-        }
-      ];
+      const currentUser = comments[0].currentUser;
+      const copiedComments = structuredClone(prevComments)[0].comments;
+      const addedComment = [...copiedComments, newComment];
+      const sortedComments = addedComment.sort((a, b) => b.score - a.score);
+      return [{ currentUser, comments: sortedComments }];
     });
 
     setNewID(newID + 1);
@@ -210,8 +216,7 @@ export default function Comments(): JSX.Element {
     };
 
     setComments((prevComments: IComments[]): IComments[] => {
-      const updatedComments = [...prevComments];
-      // mutates after spreading
+      const updatedComments = structuredClone(prevComments);
       addReplyByID(updatedComments[0].comments, commentID, newReply);
       return updatedComments;
     });
@@ -221,17 +226,15 @@ export default function Comments(): JSX.Element {
 
   function deleteComment(commentID: number): void {
     setComments((prevComments: IComments[]): IComments[] => {
-      const updatedComments = [...prevComments];
-      // mutates after spreading
+      const updatedComments = structuredClone(prevComments);
       deleteCommentByID(updatedComments[0].comments, commentID);
-      return updatedComments;
+      return sortComments(updatedComments);
     });
   }
 
   function editComment(commentID: number, content: string): void {
     setComments((prevComments: IComments[]): IComments[] => {
-      const updatedComments = [...prevComments];
-      // mutates after spreading
+      const updatedComments = structuredClone(prevComments);
       editCommentByID(updatedComments[0].comments, commentID, content);
       return updatedComments;
     });
@@ -240,9 +243,8 @@ export default function Comments(): JSX.Element {
   function updateScore(commentID: number, vote: number): void {
     setComments((prevComments: IComments[]): IComments[] => {
       const updatedComments = structuredClone(prevComments);
-      // mutates after spreading
       updateCommentScoreByID(updatedComments[0].comments, commentID, vote);
-      return updatedComments;
+      return sortComments(updatedComments);
     });
   }
 

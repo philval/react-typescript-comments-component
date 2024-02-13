@@ -60,7 +60,9 @@ export default function Comment({
           >
             +
           </button>
-          <div className="card-score-number">{comment.score}</div>
+          <div data-cy="score" className="card-score-number">
+            {comment.score}
+          </div>
           <button
             className="button-score"
             type="button"

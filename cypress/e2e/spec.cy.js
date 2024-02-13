@@ -93,13 +93,39 @@ describe("Edits New comments and replies", () => {
 
 describe("Votes on comment scores", () => {
   it("Up votes on the score", () => {
-    cy.contains("42");
+    cy.contains("2");
     cy.get('[data-cy="upVote-1"]').click();
-    cy.contains("43");
+    cy.contains("3");
   });
   it("Down votes on the score", () => {
-    cy.contains("42");
+    cy.contains("2");
     cy.get('[data-cy="downVote-1"]').click();
-    cy.contains("41");
+    cy.contains("1");
+  });
+});
+
+describe("First-level comments should be ordered by their score", () => {
+  it("Changes comment order when a score is changed", () => {
+    // add a new comment, score is 0
+    cy.get('[data-cy="inputNewComment"]').type("New comment");
+    cy.get('[data-cy="submitNewComment"]').click();
+    cy.contains("New comment");
+    // validate the current scores by checking the array
+    cy.get('[data-cy="score"]').should("have.length", 2);
+    cy.get('[data-cy="score"]').eq(0).should("have.text", "2");
+    cy.get('[data-cy="score"]').eq(1).should("have.text", "0");
+    // donwvote the score on comment 1 by another user to less than zero
+    cy.get('[data-cy="downVote-1"]').click();
+    cy.get('[data-cy="downVote-1"]').click();
+    cy.get('[data-cy="downVote-1"]').click();
+    // check the order of comments have changed.
+    cy.get('[data-cy="score"]').eq(0).should("have.text", "0");
+    cy.get('[data-cy="score"]').eq(1).should("have.text", "-1");
+    // upvote the score on comment 1 by another user to more than zero
+    cy.get('[data-cy="upVote-1"]').click();
+    cy.get('[data-cy="upVote-1"]').click();
+    // check the order of comments have changed.
+    cy.get('[data-cy="score"]').eq(0).should("have.text", "1");
+    cy.get('[data-cy="score"]').eq(1).should("have.text", "0");
   });
 });
