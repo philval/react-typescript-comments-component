@@ -1,8 +1,3 @@
-interface IComments {
-  readonly currentUser: IUser;
-  comments: IComment[];
-}
-
 interface IComment {
   id: number;
   content: string;
@@ -23,7 +18,7 @@ interface IImage {
   webp: string;
 }
 
-export type { IComments, IComment, IUser };
+export type { IComment, IUser };
 
 // https://stackoverflow.com/questions/37263357/how-to-declare-and-import-typescript-interfaces-in-a-separate-file/60343829
 
