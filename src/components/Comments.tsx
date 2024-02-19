@@ -22,13 +22,12 @@ function getHighestID(comments: IComment[]): number {
   return highestID;
 }
 
+// top level comments only
 function sortComments(comments: IComment[]): IComment[] {
-  const commentsToSort = structuredClone(comments);
-  const sortedComments = commentsToSort.sort((a, b) => b.score - a.score);
-  return sortedComments;
+  return structuredClone(comments).sort((a, b) => b.score - a.score);
 }
 
-// recursive function to find a comment by ID
+// recursive function
 export function findCommentByID(
   comments: IComment[],
   commentID: number
@@ -48,7 +47,7 @@ export function findCommentByID(
   return null;
 }
 
-// recursive function to add Reply by ID
+// recursive function
 export function addReplyByID(
   comments: IComment[],
   commentID: number,
@@ -74,7 +73,7 @@ export function addReplyByID(
   return null;
 }
 
-// recursive function to delete comment by ID
+// recursive function
 export function deleteCommentByID(
   comments: IComment[],
   commentID: number
@@ -94,7 +93,7 @@ export function deleteCommentByID(
   return comments;
 }
 
-// recursive function to edit comment by ID
+// recursive function
 export function editCommentByID(
   comments: IComment[],
   commentID: number,
@@ -119,6 +118,7 @@ export function editCommentByID(
   return null;
 }
 
+// recursive function
 export function updateCommentScoreByID(
   comments: IComment[],
   commentID: number,
