@@ -181,3 +181,23 @@ textarea {
 textarea:focus-visible {
   outline: #5457b4 auto 1px;
 }
+
+dialog {
+  margin: auto;
+  max-width: 400px;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  outline: none;
+}
+
+dialog::backdrop {
+  background-color: #7a7a7c;
+  opacity: 0.5;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}

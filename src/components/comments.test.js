@@ -1,17 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
 import "@testing-library/jest-dom";
+import { JSDOM } from "jsdom";
+
 import Comment from "./Comment";
 import NewCommentForm from "./NewCommentForm";
 import ReplyForm from "./ReplyForm";
 import EditForm from "./EditForm";
-
-// Ref RTL best practices
-// https://kentcdodds.com/blog/common-mistakes-with-react-testing-library
-
-// Ref RTL userEvent
-// https://testing-library.com/docs/user-event/intro/
+import DeleteModal from "./DeleteModal";
 
 describe("Single comment", () => {
   //props
@@ -55,17 +51,27 @@ describe("Single comment", () => {
 
   test("Deletes current comment", async () => {
     const user = userEvent.setup();
-    const deleteComment = jest.fn();
+    const isModalOpen = true;
+    const handleModalCancel = jest.fn();
+    const handleModalDelete = jest.fn();
+    // jest does not support <dialog> element yet...
+    const dom = new JSDOM();
+    global.window = dom.window;
+    global.window.HTMLDialogElement.prototype.close = jest.fn();
+
     render(
-      <Comment
-        currentUser={currentUser}
-        comment={comment}
-        deleteComment={deleteComment}
+      <DeleteModal
+        isModalOpen={isModalOpen}
+        onCancel={handleModalCancel}
+        onDelete={handleModalDelete}
       />
     );
-    await user.click(screen.getByRole("button", { name: "Delete" }));
-    expect(deleteComment).toHaveBeenCalledTimes(1);
-    expect(deleteComment).toHaveBeenCalledWith(1000);
+
+    expect(screen.getByTestId("dialog")).toBeInTheDocument();
+    await user.click(screen.getByTestId("dialog-close"));
+    expect(handleModalCancel).toHaveBeenCalledTimes(1);
+    await user.click(screen.getByTestId("dialog-delete"));
+    expect(handleModalDelete).toHaveBeenCalledTimes(1);
   });
 
   test("Toggles edit form", async () => {

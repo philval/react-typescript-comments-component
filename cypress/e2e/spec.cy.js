@@ -43,9 +43,13 @@ describe("Deletes New comments and replies", () => {
     cy.get('[data-cy="inputNewComment"]').type("Delete this comment");
     cy.get('[data-cy="submitNewComment"]').click();
     cy.contains("Delete this comment");
-
-    // delete the new comment
+    // test cancel dialog
     cy.get('[data-cy="deleteComment-2"]').click();
+    cy.get('[data-cy="dialog-close"]').click();
+    cy.contains("Delete this comment");
+    // test delete dialog
+    cy.get('[data-cy="deleteComment-2"]').click();
+    cy.get('[data-cy="dialog-delete"]').click();
     cy.contains("Delete this comment").should("not.exist");
   });
 
@@ -55,9 +59,13 @@ describe("Deletes New comments and replies", () => {
     cy.get("[data-cy=inputReply-1]").type("Delete this reply");
     cy.get('[data-cy="submitReply-1"]').click();
     cy.contains("Delete this reply");
-
-    // delete the new reply
+    // test cancel dialog
     cy.get('[data-cy="deleteComment-2"]').click();
+    cy.get('[data-cy="dialog-close"]').click();
+    cy.contains("Delete this reply");
+    // test delete dialog
+    cy.get('[data-cy="deleteComment-2"]').click();
+    cy.get('[data-cy="dialog-delete"]').click();
     cy.contains("Delete this reply").should("not.exist");
   });
 });

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IComment, IUser } from "./CommentsInterface";
 import ReplyForm from "../components/ReplyForm";
 import EditForm from "../components/EditForm";
+import DeleteModal from "./DeleteModal";
 
 // NOTE comments JSX is recursive
 
@@ -22,9 +23,9 @@ export default function Comment({
   editComment,
   updateScore
 }: CommentProps): JSX.Element {
-  // state for toggling reply form
   const [toggleReply, setToggleReply] = useState<boolean>(false);
   const [toggleEdit, setToggleEdit] = useState<boolean>(false);
+  const [isModalOpen, SetModalOpen] = useState<boolean>(false);
 
   function isUser() {
     return comment.user.username === currentUser.username;
@@ -38,9 +39,16 @@ export default function Comment({
     setToggleEdit(!toggleEdit);
   };
 
-  // TODO add modal to confirm delete
   function handleDelete() {
+    SetModalOpen(true);
+  }
+
+  function handleModalDelete() {
     deleteComment(comment.id);
+  }
+
+  function handleModalCancel() {
+    SetModalOpen(false);
   }
 
   function handleVote(vote: number): void {
@@ -98,14 +106,21 @@ export default function Comment({
 
         {/* only a user can delete own comments */}
         {isUser() && (
-          <button
-            className="button-action"
-            onClick={handleDelete}
-            data-cy={`deleteComment-${comment.id}`}
-            data-testid={`deleteComment-${comment.id}`}
-          >
-            Delete
-          </button>
+          <>
+            <button
+              className="button-action"
+              onClick={handleDelete}
+              data-cy={`deleteComment-${comment.id}`}
+              data-testid={`deleteComment-${comment.id}`}
+            >
+              Delete
+            </button>
+            <DeleteModal
+              isModalOpen={isModalOpen}
+              onCancel={handleModalCancel}
+              onDelete={handleModalDelete}
+            />
+          </>
         )}
 
         {/* only a user can edit own comments */}
@@ -152,7 +167,7 @@ export default function Comment({
       <div className="card-replies">
         {comment.replies.length > 0 &&
           comment.replies.map((reply: IComment) => (
-            // call </Comment /> recursively...
+            // render </Comment /> recursively...
             <Comment
               key={reply.id}
               currentUser={currentUser}
