@@ -183,7 +183,7 @@ export default function Comments(): JSX.Element {
     const newComment: IComment = {
       id: newID,
       content: comment,
-      createdAt: "today", // TODO use UNIX timestamp
+      createdAt: new Date().toISOString(),
       score: 0,
       user: currentUser,
       replies: []
@@ -204,7 +204,7 @@ export default function Comments(): JSX.Element {
     const newReply: IComment = {
       id: newID,
       content: commentText,
-      createdAt: "today", // TODO use UNIX timestamp
+      createdAt: new Date().toISOString(),
       score: 0,
       replyingTo: findCommentByID(comments, commentID)?.user.username,
       user: currentUser,

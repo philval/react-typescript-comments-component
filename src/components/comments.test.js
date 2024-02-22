@@ -22,7 +22,7 @@ describe("Single comment", () => {
   const comment = {
     id: 1000,
     content: "This is the 1st comment. ",
-    createdAt: "5 months ago",
+    createdAt: new Date().toISOString(),
     score: 42,
     user: {
       image: {
@@ -43,7 +43,7 @@ describe("Single comment", () => {
       "images/avatars/image-amyrobson.png"
     );
     expect(screen.getByText(/johndoe/)).toBeInTheDocument();
-    expect(screen.getByText(/5 months ago/)).toBeInTheDocument();
+    expect(screen.getByText(/just now/)).toBeInTheDocument(); // timeAgo()
     expect(screen.getByText(/This is the 1st comment/));
     expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();

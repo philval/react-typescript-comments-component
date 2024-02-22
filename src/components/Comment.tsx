@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IComment, IUser } from "./CommentsInterface";
+import timeAgo from "src/utils/timeAgo";
 import ReplyForm from "../components/ReplyForm";
 import EditForm from "../components/EditForm";
 import DeleteModal from "./DeleteModal";
@@ -87,7 +88,7 @@ export default function Comment({
         <p>CommentID: {comment.id}</p>
         <img alt="avatar" src={comment.user.image.png}></img>
         <p>User Name: {comment.user.username}</p>
-        <p>Created At: {comment.createdAt}</p>
+        <p>Created At: {timeAgo(new Date(), comment.createdAt)}</p>
         {comment.replyingTo && <p>Replying to: {comment.replyingTo}</p>}
       </div>
 
