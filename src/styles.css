@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   font-family: "Rubik", sans-serif;
+  box-sizing: border-box;
 }
 
 body {
@@ -66,6 +67,14 @@ p {
   cursor: pointer;
 }
 
+.button-form-cancel {
+  background-color: #67727e;
+}
+
+.button-form-delete {
+  background-color: #ed6368;
+}
+
 .App {
   text-align: left;
   background-color: #f5f6fa;
@@ -91,7 +100,6 @@ p {
 
 .card-score {
   grid-area: Score;
-  width: 2.5rem;
   background-color: white;
   padding: 1rem;
   border-radius: 1rem 0 0 1rem;
@@ -99,7 +107,7 @@ p {
 
 .card-score-widget {
   border-radius: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.5rem 0.75rem;
   background-color: #f5f6fa;
   color: #5457b4;
   font-weight: 500;
@@ -215,8 +223,17 @@ dialog {
   max-width: 400px;
   border: none;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 2rem;
   outline: none;
+  color: #666;
+}
+
+dialog h2 {
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+  font-weight: 400;
+  padding-bottom: 1rem;
+  color: #334253;
 }
 
 dialog::backdrop {
