@@ -212,6 +212,8 @@ textarea {
   resize: none;
   font-family: inherit;
   font-size: inherit;
+  color: inherit;
+  line-height: inherit;
 }
 
 textarea:focus-visible {
