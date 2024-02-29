@@ -22,7 +22,11 @@ export default function NewCommentForm({
   return (
     <>
       <div className="new-comment-container">
-        <img src="images/avatars/image-juliusomo.png" alt="avatar"></img>
+        <img
+          className="card-user-img-user"
+          src="images/avatars/image-juliusomo.png"
+          alt="avatar"
+        ></img>
         <form className="new-comment-form" onSubmit={handleSubmit}>
           <textarea
             placeholder="Add a comment..."
