@@ -109,3 +109,6 @@ build
 # My files
 TODO.txt
 SPEC.md
+style-guide.md
+/cypress/screenshots
+/cypress/videos
