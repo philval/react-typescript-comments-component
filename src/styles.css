@@ -1,3 +1,17 @@
+:root {
+  /* ### Primary */
+  --moderate-blue: hsl(238, 40%, 52%);
+  --soft-red: hsl(358, 79%, 66%);
+  --light-grayish-blue: hsl(239, 57%, 85%);
+  --pale-red: hsl(357, 100%, 86%);
+  /* ### Neutral */
+  --dark-blue: hsl(212, 24%, 26%);
+  --grayish-blue: hsl(211, 10%, 45%);
+  --light-gray: hsl(223, 19%, 93%);
+  --very-light-gray: hsl(228, 33%, 97%);
+  --white: hsl(0, 0%, 100%);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +21,7 @@
 
 body {
   min-height: 100vh;
-  color: #666;
+  color: var(--grayish-blue);
   line-height: 1.6;
 }
 
@@ -30,8 +44,8 @@ p {
 
 .button-score {
   border: none;
-  background-color: #f5f6fa;
-  color: #5457b4;
+  background-color: var(--very-light-gray);
+  color: var(--moderate-blue);
   font-size: 120%;
   font-weight: 500;
   cursor: pointer;
@@ -39,45 +53,45 @@ p {
 
 .button-action {
   border: none;
-  background-color: white;
+  background-color: var(--white);
   font-size: 1rem;
   cursor: pointer;
 }
 
 .button-action-reply {
-  color: #5457b4;
+  color: var(--moderate-blue);
 }
 
 .button-action-delete {
-  color: #ed6368;
+  color: var(--soft-red);
 }
 
 .button-action-edit {
-  color: #5457b4;
+  color: var(--moderate-blue);
 }
 
 .button-form {
   border: none;
   border-radius: 0.5rem;
   padding: 1rem 2rem;
-  background-color: #5457b4;
-  color: white;
+  background-color: var(--moderate-blue);
+  color: var(--white);
   font-size: 1rem;
   text-transform: uppercase;
   cursor: pointer;
 }
 
 .button-form-cancel {
-  background-color: #67727e;
+  background-color: var(--grayish-blue);
 }
 
 .button-form-delete {
-  background-color: #ed6368;
+  background-color: var(--soft-red);
 }
 
 .App {
   text-align: left;
-  background-color: #f5f6fa;
+  background-color: var(--very-light-gray);
 }
 
 .app-container {
@@ -100,7 +114,7 @@ p {
 
 .card-score {
   grid-area: Score;
-  background-color: white;
+  background-color: var(--white);
   padding: 1rem;
   border-radius: 1rem 0 0 1rem;
 }
@@ -108,8 +122,8 @@ p {
 .card-score-widget {
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
-  background-color: #f5f6fa;
-  color: #5457b4;
+  background-color: var(--very-light-gray);
+  color: var(--moderate-blue);
   font-weight: 500;
   text-align: center;
 }
@@ -123,13 +137,13 @@ p {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  background-color: white;
+  background-color: var(--white);
   padding: 1rem;
 }
 
 .card-user-you {
-  color: white;
-  background-color: #5457b4;
+  color: var(--white);
+  background-color: var(--moderate-blue);
   border-radius: 0.125rem;
   padding: 0.125rem 0.5rem;
   font-size: 80%;
@@ -149,7 +163,7 @@ p {
 
 .card-actions {
   grid-area: Actions;
-  background-color: white;
+  background-color: var(--white);
   padding: 1rem;
   border-radius: 0 1rem 0 0;
   display: flex;
@@ -159,7 +173,7 @@ p {
 
 .card-comment {
   grid-area: Comment;
-  background-color: white;
+  background-color: var(--white);
   padding: 1rem;
   border-radius: 0 0 1rem 0;
   display: flex;
@@ -183,7 +197,7 @@ p {
 .new-reply-container {
   display: flex;
   gap: 1rem;
-  background-color: white;
+  background-color: var(--white);
   border-radius: 1rem;
   padding: 1rem;
 }
@@ -205,7 +219,7 @@ p {
 }
 
 textarea {
-  border: solid 1px #eee;
+  border: solid 1px var(--light-gray);
   border-radius: 1rem;
   padding: 1rem 1.5rem;
   width: 100%;
@@ -217,7 +231,7 @@ textarea {
 }
 
 textarea:focus-visible {
-  outline: #5457b4 auto 1px;
+  outline: var(--moderate-blue) auto 1px;
 }
 
 dialog {
@@ -227,7 +241,7 @@ dialog {
   border-radius: 8px;
   padding: 2rem;
   outline: none;
-  color: #666;
+  color: var(--grayish-blue);
 }
 
 dialog h2 {
@@ -235,11 +249,11 @@ dialog h2 {
   line-height: 1.75rem;
   font-weight: 400;
   padding-bottom: 1rem;
-  color: #334253;
+  color: var(--dark-blue);
 }
 
 dialog::backdrop {
-  background-color: #7a7a7c;
+  background-color: var(--grayish-blue);
   opacity: 0.5;
 }
 
