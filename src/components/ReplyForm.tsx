@@ -28,7 +28,11 @@ export default function ReplyForm({
   return (
     <>
       <div className="new-reply-container">
-        <img alt="avatar" src="images/avatars/image-juliusomo.png" />
+        <img
+          className="card-user-img-user"
+          alt="avatar"
+          src="images/avatars/image-juliusomo.png"
+        />
         <form className="new-reply-form" onSubmit={handleSubmit}>
           <textarea
             placeholder="Add a comment..."
