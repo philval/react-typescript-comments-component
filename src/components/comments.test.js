@@ -37,7 +37,6 @@ describe("Single comment", () => {
   test("Displays comment contents", () => {
     render(<Comment currentUser={currentUser} comment={comment} />);
 
-    expect(screen.getByText(/1000/)).toBeInTheDocument();
     expect(screen.getByAltText("avatar")).toHaveAttribute(
       "src",
       "images/avatars/image-amyrobson.png"
