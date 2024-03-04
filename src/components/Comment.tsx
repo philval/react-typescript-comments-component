@@ -205,16 +205,16 @@ export default function Comment({
         </div>
       )}
 
-      <div className="card-reply-form">
-        {toggleReply && (
+      {toggleReply && (
+        <div className="card-reply-form">
           <ReplyForm
             handleToggleReply={handleToggleReply}
             username={comment.user.username}
             commentID={comment.id}
             addNewReply={addNewReply}
           />
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="card-replies">
         {comment.replies.length > 0 &&
