@@ -98,9 +98,7 @@ export default function Comment({
             src={comment.user.image.png}
           ></img>
         )}
-        <div>
-          <strong>{comment.user.username}</strong>
-        </div>
+        <div className="card-user-name">{comment.user.username}</div>
         {isUser() && <div className="card-user-you">you</div>}
         <div>{timeAgo(new Date(), comment.createdAt)}</div>
       </div>

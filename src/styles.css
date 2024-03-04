@@ -22,7 +22,7 @@
 body {
   min-height: 100vh;
   color: var(--grayish-blue);
-  line-height: 1.6;
+  line-height: auto;
 }
 
 h1 {
@@ -45,8 +45,7 @@ p {
 .button-score {
   border: none;
   background-color: var(--very-light-gray);
-  color: var(--moderate-blue);
-  font-size: 120%;
+  color: var(--light-grayish-blue);
   font-weight: 500;
   cursor: pointer;
 }
@@ -55,6 +54,7 @@ p {
   border: none;
   background-color: var(--white);
   font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
 }
 
@@ -115,12 +115,13 @@ p {
 .card-score {
   grid-area: Score;
   background-color: var(--white);
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 1rem 0 0 1rem;
 }
 
 .card-score-widget {
-  border-radius: 0.5rem;
+  width: 2.5rem;
+  border-radius: 0.625rem;
   padding: 0.5rem 0.75rem;
   background-color: var(--very-light-gray);
   color: var(--moderate-blue);
@@ -138,7 +139,7 @@ p {
   gap: 0.5rem;
   align-items: center;
   background-color: var(--white);
-  padding: 1rem;
+  padding-top: 1.5rem;
 }
 
 .card-user-you {
@@ -161,10 +162,15 @@ p {
   height: 2rem;
 }
 
+.card-user-name {
+  font-weight: 500;
+  color: var(--dark-blue);
+}
+
 .card-actions {
   grid-area: Actions;
   background-color: var(--white);
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 0 1rem 0 0;
   display: flex;
   gap: 1rem;
@@ -174,7 +180,7 @@ p {
 .card-comment {
   grid-area: Comment;
   background-color: var(--white);
-  padding: 1rem;
+  padding-right: 1.5rem;
   border-radius: 0 0 1rem 0;
   display: flex;
   justify-content: stretch;
