@@ -22,7 +22,7 @@
 body {
   min-height: 100vh;
   color: var(--grayish-blue);
-  line-height: auto;
+  line-height: 1.5;
 }
 
 h1 {
@@ -46,8 +46,13 @@ p {
   border: none;
   background-color: var(--very-light-gray);
   color: var(--light-grayish-blue);
+  font-size: 1.25rem;
   font-weight: 500;
   cursor: pointer;
+}
+
+.button-score:hover {
+  color: var(--moderate-blue);
 }
 
 .button-action {
@@ -58,16 +63,59 @@ p {
   cursor: pointer;
 }
 
+.button-action svg {
+  margin-right: 0.5rem;
+}
+
+/* reply */
 .button-action-reply {
   color: var(--moderate-blue);
 }
 
+.button-action-reply:hover {
+  color: var(--light-grayish-blue);
+}
+
+.button-action-reply svg {
+  fill: var(--moderate-blue);
+}
+
+.button-action-reply:hover svg {
+  fill: var(--light-grayish-blue);
+}
+
+/* delete */
 .button-action-delete {
   color: var(--soft-red);
 }
 
+.button-action-delete:hover {
+  color: var(--pale-red);
+}
+
+.button-action-delete svg {
+  fill: var(--soft-red);
+}
+
+.button-action-delete:hover svg {
+  fill: var(--pale-red);
+}
+
+/* edit */
 .button-action-edit {
   color: var(--moderate-blue);
+}
+
+.button-action-edit:hover {
+  color: var(--light-grayish-blue);
+}
+
+.button-action-edit svg {
+  fill: var(--moderate-blue);
+}
+
+.button-action-edit:hover svg {
+  fill: var(--light-grayish-blue);
 }
 
 .button-form {
@@ -81,11 +129,17 @@ p {
   cursor: pointer;
 }
 
-.button-form-cancel {
+.button-form:hover {
+  background-color: var(--light-grayish-blue);
+}
+
+.button-form-cancel,
+.button-form-cancel:hover {
   background-color: var(--grayish-blue);
 }
 
-.button-form-delete {
+.button-form-delete,
+.button-form-delete:hover {
   background-color: var(--soft-red);
 }
 
