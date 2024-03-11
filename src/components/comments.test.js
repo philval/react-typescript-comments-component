@@ -228,6 +228,37 @@ describe("New comment", () => {
     expect(addNewComment).toHaveBeenCalledWith("The Quick Brown Fox");
     expect(screen.getByRole("textbox")).toHaveValue("");
   });
+
+  test("Form displays error message for: empty input", async () => {
+    // empty submission
+    const user = userEvent.setup();
+    render(<NewCommentForm />);
+    await user.click(screen.getByTestId("submitNewComment"));
+    expect(screen.getByTestId("formError")).toHaveTextContent(
+      "Please add a comment, minimum 8 characters."
+    );
+  });
+
+  test("Form displays error message for: input less than minimum length", async () => {
+    const user = userEvent.setup();
+    render(<NewCommentForm />);
+    await user.type(screen.getByRole("textbox"), "1234567");
+    await user.click(screen.getByTestId("submitNewComment"));
+    expect(screen.getByTestId("formError")).toHaveTextContent(
+      "Comments must be at least 8 characters."
+    );
+  });
+
+  test("Form displays error message for: input greater than minimum length", async () => {
+    const user = userEvent.setup();
+    render(<NewCommentForm />);
+    const tooLong = "12345678".repeat(32) + "1";
+    await user.type(screen.getByRole("textbox"), tooLong);
+    await user.click(screen.getByTestId("submitNewComment"));
+    expect(screen.getByTestId("formError")).toHaveTextContent(
+      "Comments are maximum 256 characters."
+    );
+  });
 });
 
 describe("Comment voting", () => {

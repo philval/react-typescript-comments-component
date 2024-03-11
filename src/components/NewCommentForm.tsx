@@ -8,6 +8,7 @@ export default function NewCommentForm({
   addNewComment
 }: NewCommentFormProps): JSX.Element {
   const [newComment, setNewComment] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNewComment(e.target.value);
@@ -15,8 +16,18 @@ export default function NewCommentForm({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addNewComment(newComment);
-    setNewComment("");
+    //TODO extract to a function / util ?
+    if (newComment.length === 0) {
+      setError("Please add a comment, minimum 8 characters.");
+    } else if (newComment.length < 8) {
+      setError("Comments must be at least 8 characters.");
+    } else if (newComment.length > 256) {
+      setError("Comments are maximum 256 characters.");
+    } else {
+      addNewComment(newComment);
+      setNewComment("");
+      setError("");
+    }
   };
 
   return (
@@ -43,9 +54,13 @@ export default function NewCommentForm({
           >
             Send
           </button>
+          {error && (
+            <div data-testid="formError" className="form-error">
+              {error}
+            </div>
+          )}
         </form>
       </div>
-      {/* </div> */}
     </>
   );
 }
