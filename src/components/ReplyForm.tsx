@@ -12,7 +12,8 @@ export default function ReplyForm({
   handleToggleReply,
   addNewReply
 }: ReplyFormProps): JSX.Element {
-  const [reply, setReply] = useState<string>(`@${username}, `); // anti-pattern ?
+  const [reply, setReply] = useState<string>(`@${username}, `);
+  const [error, setError] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReply(e.target.value);
@@ -20,9 +21,18 @@ export default function ReplyForm({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addNewReply(reply, commentID);
-    setReply(`@${username}, `);
-    handleToggleReply();
+    if (reply.length === 0) {
+      setError("Please add a reply, minimum 8 characters.");
+    } else if (reply.length < 8) {
+      setError("Replies must be at least 8 characters.");
+    } else if (reply.length > 256) {
+      setError("Replies are maximum 256 characters.");
+    } else {
+      addNewReply(reply, commentID);
+      setReply(`@${username}, `);
+      handleToggleReply();
+      setError("");
+    }
   };
 
   return (
@@ -49,6 +59,11 @@ export default function ReplyForm({
           >
             Reply
           </button>
+          {error && (
+            <div data-testid="formError" className="form-error">
+              {error}
+            </div>
+          )}
         </form>
       </div>
     </>

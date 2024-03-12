@@ -199,6 +199,39 @@ describe("Comment reply", () => {
     await user.click(screen.getByRole("button", { name: "Reply" }));
     expect(screen.getByRole("textbox")).toHaveValue("@johndoe, ");
   });
+
+  test("Form displays error message for: empty input", async () => {
+    const user = userEvent.setup();
+    render(<ReplyForm username="joebloggs" commentID={1} />);
+    await user.clear(screen.getByRole("textbox"));
+    await user.click(screen.getByTestId("submitReply-1"));
+    expect(screen.getByTestId("formError")).toHaveTextContent(
+      "Please add a reply, minimum 8 characters."
+    );
+  });
+
+  test("Form displays error message for: input less than minimum length", async () => {
+    const user = userEvent.setup();
+    render(<ReplyForm username="joebloggs" commentID={1} />);
+    await user.clear(screen.getByRole("textbox"));
+    await user.type(screen.getByRole("textbox"), "1234567");
+    await user.click(screen.getByTestId("submitReply-1"));
+    expect(screen.getByTestId("formError")).toHaveTextContent(
+      "Replies must be at least 8 characters."
+    );
+  });
+
+  test("Form displays error message for: input greater than minimum length", async () => {
+    const user = userEvent.setup();
+    render(<ReplyForm username="joebloggs" commentID={1} />);
+    const tooLong = "12345678".repeat(32) + "1";
+    await user.clear(screen.getByRole("textbox"));
+    await user.type(screen.getByRole("textbox"), tooLong);
+    await user.click(screen.getByTestId("submitReply-1"));
+    expect(screen.getByTestId("formError")).toHaveTextContent(
+      "Replies are maximum 256 characters."
+    );
+  });
 });
 
 describe("New comment", () => {
@@ -230,7 +263,6 @@ describe("New comment", () => {
   });
 
   test("Form displays error message for: empty input", async () => {
-    // empty submission
     const user = userEvent.setup();
     render(<NewCommentForm />);
     await user.click(screen.getByTestId("submitNewComment"));
