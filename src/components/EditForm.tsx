@@ -26,10 +26,8 @@ export default function ReplyForm({
 
   return (
     <>
-      <form className="new-reply-form" onSubmit={handleSubmit}>
-        {/* set focus to end of text */}
+      <form className="edit-comment-form" onSubmit={handleSubmit}>
         <textarea
-          autoFocus
           value={editContent}
           onChange={handleChange}
           data-cy={`editComment-${commentID}`}
