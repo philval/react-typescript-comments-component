@@ -70,32 +70,32 @@ describe("Deletes New comments and replies", () => {
   });
 });
 
-describe("Edits New comments and replies", () => {
+describe("Edits new comments and replies", () => {
   it("Edits a new comment", () => {
     // setup a new comment to edit
-    cy.get('[data-cy="inputNewComment"]').type("Edit this comment.");
+    cy.get('[data-cy="inputNewComment"]').type("Edit this comment. ");
     cy.get('[data-cy="submitNewComment"]').click();
-    cy.contains("Edit this comment.");
+    cy.contains("Edit this comment. ");
 
     // edit the new comment
     cy.get('[data-cy="toggleEdit-2"]').click();
-    cy.get('[data-cy="editComment-2"]').type("Editing now. ");
+    cy.get('[data-cy="editComment-2"]').type("Editing now...");
     cy.get('[data-cy="submitEdit-2"]').click();
-    cy.contains("Editing now. Edit this comment.");
+    cy.contains("Edit this comment. Editing now...");
   });
 
   it("Edits a new reply", () => {
     // setup a new reply to edit
     cy.get('[data-cy="toggleReply-1"]').click();
-    cy.get("[data-cy=inputReply-1]").type("Edit this reply.");
+    cy.get("[data-cy=inputReply-1]").type("Edit this reply. ");
     cy.get('[data-cy="submitReply-1"]').click();
-    cy.contains("@commenter1, Edit this reply");
+    cy.contains("@commenter1, Edit this reply. ");
 
     // edit the new reply
     cy.get('[data-cy="toggleEdit-2"]').click();
-    cy.get('[data-cy="editComment-2"]').type("Editing now. ");
+    cy.get('[data-cy="editComment-2"]').type("Editing now...");
     cy.get('[data-cy="submitEdit-2"]').click();
-    cy.contains("Editing now. @commenter1, Edit this reply.");
+    cy.contains("@commenter1, Edit this reply. Editing now...");
   });
 });
 
