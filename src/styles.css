@@ -260,7 +260,7 @@ p {
   gap: 1rem;
   background-color: var(--white);
   border-radius: 1rem;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
 }
 
 .new-comment-form {
