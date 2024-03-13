@@ -61,7 +61,7 @@ export default function DeleteModal({
       <div className="dialog-buttons">
         <button
           type="button"
-          className="button-form button-form-cancel"
+          className="button-dialog button-dialog-cancel"
           onClick={closeDialogue}
           data-cy="dialog-close"
           data-testid="dialog-close"
@@ -70,7 +70,7 @@ export default function DeleteModal({
         </button>
         <button
           type="button"
-          className="button-form button-form-delete"
+          className="button-dialog button-dialog-delete"
           onClick={closeDialogueDeleteComment}
           data-cy="dialog-delete"
           data-testid="dialog-delete"
