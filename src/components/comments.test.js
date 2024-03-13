@@ -124,7 +124,7 @@ describe("Single comment", () => {
     );
   });
 
-  test("Form displays error message for: empty input", async () => {
+  test("Edit form displays error message for: empty input", async () => {
     const user = userEvent.setup();
     const content = "some random content.";
     render(<EditForm content={content} />);
@@ -135,7 +135,7 @@ describe("Single comment", () => {
     );
   });
 
-  test("Form displays error message for: input less than minimum length", async () => {
+  test("Edit form displays error message for: input less than minimum length", async () => {
     const user = userEvent.setup();
     const content = "some random content.";
     render(<EditForm content={content} />);
@@ -147,7 +147,7 @@ describe("Single comment", () => {
     );
   });
 
-  test("Form displays error message for: input greater than minimum length", async () => {
+  test("Edit form displays error message for: input greater than minimum length", async () => {
     const user = userEvent.setup();
     const content = "some random content.";
     render(<EditForm content={content} />);
@@ -193,7 +193,7 @@ describe("Comment reply", () => {
 
     // when asserting that an element isn't there, use queryBy
     expect(screen.queryByRole("textbox")).toBeNull();
-    expect(screen.queryByTestId("submitReply-1")).toBeNull();
+    expect(screen.queryByRole("submit")).toBeNull();
 
     // toggle on
     await user.click(screen.getByTestId("toggleReply-1"));
@@ -203,7 +203,7 @@ describe("Comment reply", () => {
     // toggle off
     await user.click(screen.getByTestId("toggleReply-1"));
     expect(screen.queryByRole("textbox")).toBeNull();
-    expect(screen.queryByTestId("submitReply-1")).toBeNull();
+    expect(screen.queryByRole("submit")).toBeNull();
   });
 
   test("Reply form displays User avatar", async () => {
@@ -236,34 +236,34 @@ describe("Comment reply", () => {
     expect(screen.getByRole("textbox")).toHaveValue("@johndoe, ");
   });
 
-  test("Form displays error message for: empty input", async () => {
+  test("Reply form displays error message for: empty input", async () => {
     const user = userEvent.setup();
-    render(<ReplyForm username="joebloggs" commentID={1} />);
+    render(<ReplyForm username="joebloggs" />);
     await user.clear(screen.getByRole("textbox"));
-    await user.click(screen.getByTestId("submitReply-1"));
+    await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
       "Please add a reply, minimum 8 characters."
     );
   });
 
-  test("Form displays error message for: input less than minimum length", async () => {
+  test("Reply form displays error message for: input less than minimum length", async () => {
     const user = userEvent.setup();
-    render(<ReplyForm username="joebloggs" commentID={1} />);
+    render(<ReplyForm username="joebloggs" />);
     await user.clear(screen.getByRole("textbox"));
     await user.type(screen.getByRole("textbox"), "1234567");
-    await user.click(screen.getByTestId("submitReply-1"));
+    await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
       "Replies must be at least 8 characters."
     );
   });
 
-  test("Form displays error message for: input greater than minimum length", async () => {
+  test("Reply form displays error message for: input greater than minimum length", async () => {
     const user = userEvent.setup();
-    render(<ReplyForm username="joebloggs" commentID={1} />);
+    render(<ReplyForm username="joebloggs" />);
     const tooLong = "12345678".repeat(32) + "1";
     await user.clear(screen.getByRole("textbox"));
     await user.type(screen.getByRole("textbox"), tooLong);
-    await user.click(screen.getByTestId("submitReply-1"));
+    await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
       "Replies are maximum 256 characters."
     );
@@ -292,37 +292,37 @@ describe("New comment", () => {
     const user = userEvent.setup();
     render(<NewCommentForm addNewComment={addNewComment} />);
     await user.type(screen.getByRole("textbox"), "The Quick Brown Fox");
-    await user.click(screen.getByTestId("submitNewComment"));
+    await user.click(screen.getByRole("button"));
     expect(addNewComment).toHaveBeenCalledTimes(1);
     expect(addNewComment).toHaveBeenCalledWith("The Quick Brown Fox");
     expect(screen.getByRole("textbox")).toHaveValue("");
   });
 
-  test("Form displays error message for: empty input", async () => {
+  test("New comment form displays error message for: empty input", async () => {
     const user = userEvent.setup();
     render(<NewCommentForm />);
-    await user.click(screen.getByTestId("submitNewComment"));
+    await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
       "Please add a comment, minimum 8 characters."
     );
   });
 
-  test("Form displays error message for: input less than minimum length", async () => {
+  test("New comment form displays error message for: input less than minimum length", async () => {
     const user = userEvent.setup();
     render(<NewCommentForm />);
     await user.type(screen.getByRole("textbox"), "1234567");
-    await user.click(screen.getByTestId("submitNewComment"));
+    await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
       "Comments must be at least 8 characters."
     );
   });
 
-  test("Form displays error message for: input greater than minimum length", async () => {
+  test("New comment form displays error message for: input greater than minimum length", async () => {
     const user = userEvent.setup();
     render(<NewCommentForm />);
     const tooLong = "12345678".repeat(32) + "1";
     await user.type(screen.getByRole("textbox"), tooLong);
-    await user.click(screen.getByTestId("submitNewComment"));
+    await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
       "Comments are maximum 256 characters."
     );
