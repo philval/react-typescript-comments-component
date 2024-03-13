@@ -13,6 +13,7 @@ export default function ReplyForm({
   editComment
 }: EditFormProps): JSX.Element {
   const [editContent, setEditContent] = useState<string>(content);
+  const [error, setError] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditContent(e.target.value);
@@ -20,8 +21,17 @@ export default function ReplyForm({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    editComment(commentID, editContent);
-    handleToggleEdit();
+    if (editContent.length === 0) {
+      setError("Please add a comment, minimum 8 characters.");
+    } else if (editContent.length < 8) {
+      setError("Comments must be at least 8 characters.");
+    } else if (editContent.length > 256) {
+      setError("Comments are maximum 256 characters.");
+    } else {
+      editComment(commentID, editContent);
+      handleToggleEdit();
+      setError("");
+    }
   };
 
   return (
@@ -41,6 +51,11 @@ export default function ReplyForm({
         >
           Update
         </button>
+        {error && (
+          <div data-testid="formError" className="form-error">
+            {error}
+          </div>
+        )}
       </form>
     </>
   );
