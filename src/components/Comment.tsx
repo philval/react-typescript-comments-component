@@ -212,9 +212,9 @@ export default function Comment({
         </div>
       )}
 
-      <div className="card-replies">
-        {comment.replies.length > 0 &&
-          comment.replies.map((reply: IComment) => (
+      {comment.replies.length > 0 && (
+        <div className="card-replies">
+          {comment.replies.map((reply: IComment) => (
             // render </Comment /> recursively...
             <Comment
               key={reply.id}
@@ -226,7 +226,8 @@ export default function Comment({
               updateScore={updateScore}
             />
           ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
