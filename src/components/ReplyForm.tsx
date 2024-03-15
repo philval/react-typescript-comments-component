@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { IUser } from "./CommentsInterface";
 interface ReplyFormProps {
+  currentUser: IUser;
   username: string;
   commentID: number;
   handleToggleReply: () => void;
@@ -7,6 +9,7 @@ interface ReplyFormProps {
 }
 
 export default function ReplyForm({
+  currentUser,
   username,
   commentID,
   handleToggleReply,
@@ -41,7 +44,7 @@ export default function ReplyForm({
         <img
           className="card-user-img-user"
           alt="avatar"
-          src="images/avatars/image-juliusomo.png"
+          src={currentUser.image.png}
         />
         <form className="new-reply-form" onSubmit={handleSubmit}>
           <textarea

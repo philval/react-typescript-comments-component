@@ -203,6 +203,7 @@ export default function Comment({
       {toggleReply && (
         <div className="card-reply-form">
           <ReplyForm
+            currentUser={currentUser}
             handleToggleReply={handleToggleReply}
             username={comment.user.username}
             commentID={comment.id}

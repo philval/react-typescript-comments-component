@@ -207,15 +207,15 @@ describe("Comment reply", () => {
   });
 
   test("Reply form displays User avatar", async () => {
-    render(<ReplyForm />);
+    render(<ReplyForm currentUser={currentUser} />);
     expect(screen.getByAltText("avatar")).toHaveAttribute(
       "src",
-      "images/avatars/image-juliusomo.png"
+      "./images/avatars/image-juliusomo.png"
     );
   });
 
   test("Reply form has placeholder text", async () => {
-    render(<ReplyForm />);
+    render(<ReplyForm currentUser={currentUser} />);
     expect(screen.getByRole("textbox")).toHaveAttribute(
       "placeholder",
       "Add a comment..."
@@ -238,7 +238,7 @@ describe("Comment reply", () => {
 
   test("Reply form displays error message for: empty input", async () => {
     const user = userEvent.setup();
-    render(<ReplyForm username="joebloggs" />);
+    render(<ReplyForm currentUser={currentUser} username="joebloggs" />);
     await user.clear(screen.getByRole("textbox"));
     await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
@@ -248,7 +248,7 @@ describe("Comment reply", () => {
 
   test("Reply form displays error message for: input less than minimum length", async () => {
     const user = userEvent.setup();
-    render(<ReplyForm username="joebloggs" />);
+    render(<ReplyForm currentUser={currentUser} username="joebloggs" />);
     await user.clear(screen.getByRole("textbox"));
     await user.type(screen.getByRole("textbox"), "1234567");
     await user.click(screen.getByRole("button"));
@@ -259,7 +259,7 @@ describe("Comment reply", () => {
 
   test("Reply form displays error message for: input greater than minimum length", async () => {
     const user = userEvent.setup();
-    render(<ReplyForm username="joebloggs" />);
+    render(<ReplyForm currentUser={currentUser} username="joebloggs" />);
     const tooLong = "12345678".repeat(32) + "1";
     await user.clear(screen.getByRole("textbox"));
     await user.type(screen.getByRole("textbox"), tooLong);
