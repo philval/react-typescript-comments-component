@@ -260,7 +260,7 @@ export default function Comments(): JSX.Element {
             />
           ))}
       </div>
-      <NewCommentForm addNewComment={addNewComment} />
+      <NewCommentForm addNewComment={addNewComment} currentUser={currentUser} />
     </>
   );
 }

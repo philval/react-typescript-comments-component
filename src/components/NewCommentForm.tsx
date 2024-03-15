@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { IUser } from "./CommentsInterface";
 
 interface NewCommentFormProps {
+  currentUser: IUser;
   addNewComment: (comment: string) => void;
 }
 
 export default function NewCommentForm({
+  currentUser,
   addNewComment
 }: NewCommentFormProps): JSX.Element {
   const [newComment, setNewComment] = useState<string>("");
@@ -16,7 +19,6 @@ export default function NewCommentForm({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //TODO extract to a function / util ?
     if (newComment.length === 0) {
       setError("Please add a comment, minimum 8 characters.");
     } else if (newComment.length < 8) {
@@ -35,7 +37,7 @@ export default function NewCommentForm({
       <div className="new-comment-container">
         <img
           className="card-user-img-user"
-          src="images/avatars/image-juliusomo.png"
+          src={currentUser.image?.png}
           alt="avatar"
         ></img>
         <form className="new-comment-form" onSubmit={handleSubmit}>

@@ -271,16 +271,24 @@ describe("Comment reply", () => {
 });
 
 describe("New comment", () => {
+  const currentUser = {
+    image: {
+      png: "./images/avatars/image-juliusomo.png",
+      webp: "./images/avatars/image-juliusomo.webp"
+    },
+    username: "johndoe"
+  };
+
   test("New comment form displays User avatar", () => {
-    render(<NewCommentForm />);
+    render(<NewCommentForm currentUser={currentUser} />);
     expect(screen.getByAltText("avatar")).toHaveAttribute(
       "src",
-      "images/avatars/image-juliusomo.png"
+      "./images/avatars/image-juliusomo.png"
     );
   });
 
   test("New comment form has placeholder text", () => {
-    render(<NewCommentForm />);
+    render(<NewCommentForm currentUser={currentUser} />);
     expect(screen.getByRole("textbox")).toHaveAttribute(
       "placeholder",
       "Add a comment..."
@@ -290,7 +298,9 @@ describe("New comment", () => {
   test("New comment form resets after text submitted", async () => {
     const addNewComment = jest.fn();
     const user = userEvent.setup();
-    render(<NewCommentForm addNewComment={addNewComment} />);
+    render(
+      <NewCommentForm currentUser={currentUser} addNewComment={addNewComment} />
+    );
     await user.type(screen.getByRole("textbox"), "The Quick Brown Fox");
     await user.click(screen.getByRole("button"));
     expect(addNewComment).toHaveBeenCalledTimes(1);
@@ -300,7 +310,7 @@ describe("New comment", () => {
 
   test("New comment form displays error message for: empty input", async () => {
     const user = userEvent.setup();
-    render(<NewCommentForm />);
+    render(<NewCommentForm currentUser={currentUser} />);
     await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
       "Please add a comment, minimum 8 characters."
@@ -309,7 +319,7 @@ describe("New comment", () => {
 
   test("New comment form displays error message for: input less than minimum length", async () => {
     const user = userEvent.setup();
-    render(<NewCommentForm />);
+    render(<NewCommentForm currentUser={currentUser} />);
     await user.type(screen.getByRole("textbox"), "1234567");
     await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
@@ -319,7 +329,7 @@ describe("New comment", () => {
 
   test("New comment form displays error message for: input greater than minimum length", async () => {
     const user = userEvent.setup();
-    render(<NewCommentForm />);
+    render(<NewCommentForm currentUser={currentUser} />);
     const tooLong = "12345678".repeat(32) + "1";
     await user.type(screen.getByRole("textbox"), tooLong);
     await user.click(screen.getByRole("button"));
