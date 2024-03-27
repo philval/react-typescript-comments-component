@@ -1,6 +1,12 @@
 # React Typescript Comments Component
 
-The "Interactive comments section" challenge from [Frontend Mentor](https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9) using React and Typescript.
+The ["Interactive comments section"](https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9) challenge from frontendmentor.io using React and Typescript.
+
+## Live Demo
+
+The project is built and deployed on vercel.com at:
+
+[react-typescript-comments-component.vercel.app](https://react-typescript-comments-component.vercel.app/)
 
 ## Requirements
 
@@ -42,7 +48,7 @@ Getting to this point, with no compile errors or warnings was an eye-opener. Typ
 
 ## Component Hierarchy Part One
 
-and then this happened :
+...and then this happened:
 
 ![component hierarchy start](https://raw.githubusercontent.com/philval/react-typescript-comments-component/main/components-start.png)
 
@@ -60,7 +66,7 @@ To quote Robin Wieruch, "React Testing Library moves you towards testing user be
 
 RTL tests are run by Jest, and on "watch mode" feedback is relatively instant with no context switching, so the DX is good. One nice feature of RTL is that selection of HTML elements is often by their aria-role, mimicking how a screen-reader sees the app.
 
-The library jest-dom extends RTL with custom jest matchers to test the state of the DOM :
+The library jest-dom extends RTL with custom jest matchers to test the state of the DOM:
 [https://github.com/testing-library/jest-dom](https://github.com/testing-library/jest-dom).
 
 ## Dev Container
@@ -71,4 +77,45 @@ Customising the build using a dockerfile was essential. It took some research to
 
 ## Component Hierarchy Part Two
 
-WIP
+Did you ever code a component hierarchy perfectly on your first try ?
+
+The latest (final?) hierarchy looks like this:
+
+![component hierarchy part two](https://raw.githubusercontent.com/philval/react-typescript-comments-component/main/components-part-two.png)
+
+- A single `<Comment />` component is recursively rendered (its only a function). With E2E tests running, I felt confident in both moving to recursion, and deleting the former `<CommentReply />` component.
+- `<ReplyForm />` and `<EditForm />` components are conditionally rendered when the user clicks on the relevant button.
+- The `<DeleteModal />` component uses the HTML `dialog` element, available across "baseline" browsers since March 2022 (ref: [caniuse.com](https://caniuse.com/dialog)) and MDN.
+
+## State
+
+No state libraries, just React.
+
+However the `<Comments />` state object is "hierarchical" and new comments can be created, updated, deleted on any `node` in the hierarchy.
+
+React is very particular about not mutating state, and recommends ["flattening"](https://react.dev/learn/choosing-the-state-structure#avoid-deeply-nested-state) nested objects.
+
+Spreading complex objects suffers from "shallow copies". So, I have used the structuredClone (web API) to "deep copy" existing state, and then feel confident in using mutating methods such as Array.prototype.push() on the state. The pattern :
+
+```
+setComments((prevComments: IComment[]): IComment[] => {
+  const copiedComments = structuredClone(prevComments);
+  ....
+```
+
+## CSS
+
+The project uses a single `styles.css` file. Options are numerous for CSS in react projects:
+
+- Global CSS
+- Inline styles
+- CSS modules
+- CSS in JS eg. styled-components
+- CSS Frameworks eg. Tailwind, Material-UI, Chakra UI, Mantine...
+- StyleX from Facebook no less.
+
+_"CSS fatigue" anyone ?_
+
+Adopting any of them is adding a dependency and maintenance effort. My primary objective is a Typescript project. I have used functional CSS before namely [Tachyons](https://tachyons.io/) (on a custom Wordpress Theme). If this component was part of a larger application, I would be very concerned about CSS scoping.
+
+... end ...
