@@ -1,9 +1,9 @@
 beforeEach(() => {
-  cy.intercept("http://localhost:3000/data.json", {
+  cy.intercept("http://localhost:5173/data.json", {
     fixture: "data.json"
   }).as("getData");
 
-  cy.visit("http://localhost:3000/");
+  cy.visit("http://localhost:5173/");
   cy.wait("@getData");
 });
 
