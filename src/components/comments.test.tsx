@@ -1,8 +1,12 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import { JSDOM } from "jsdom";
 
+import { IComment, IUser } from "./CommentsInterface";
 import Comment from "./Comment";
 import NewCommentForm from "./NewCommentForm";
 import ReplyForm from "./ReplyForm";
@@ -11,7 +15,7 @@ import DeleteModal from "./DeleteModal";
 
 describe("Single comment", () => {
   //props
-  const currentUser = {
+  const currentUser: IUser = {
     image: {
       png: "./images/avatars/image-juliusomo.png",
       webp: "./images/avatars/image-juliusomo.webp"
@@ -19,7 +23,7 @@ describe("Single comment", () => {
     username: "johndoe"
   };
 
-  const comment = {
+  const comment: IComment = {
     id: 1000,
     content: "This is the 1st comment. ",
     createdAt: new Date().toISOString(),
@@ -35,7 +39,16 @@ describe("Single comment", () => {
   };
 
   test("Displays comment contents", () => {
-    render(<Comment currentUser={currentUser} comment={comment} />);
+    render(
+      <Comment
+        currentUser={currentUser}
+        comment={comment}
+        addNewReply={jest.fn()}
+        deleteComment={jest.fn()}
+        editComment={jest.fn()}
+        updateScore={jest.fn()}
+      />
+    );
 
     expect(screen.getByAltText("avatar")).toHaveAttribute(
       "src",
@@ -53,10 +66,12 @@ describe("Single comment", () => {
     const isModalOpen = true;
     const handleModalCancel = jest.fn();
     const handleModalDelete = jest.fn();
-    // jest does not support <dialog> element yet...
-    const dom = new JSDOM();
-    global.window = dom.window;
-    global.window.HTMLDialogElement.prototype.close = jest.fn();
+
+    // HTMLDialogElement is not supported by jest
+    // https://github.com/jsdom/jsdom/issues/3294
+    HTMLDialogElement.prototype.show = jest.fn();
+    HTMLDialogElement.prototype.showModal = jest.fn();
+    HTMLDialogElement.prototype.close = jest.fn();
 
     render(
       <DeleteModal
@@ -75,7 +90,16 @@ describe("Single comment", () => {
 
   test("Toggles edit form", async () => {
     const user = userEvent.setup();
-    render(<Comment currentUser={currentUser} comment={comment} />);
+    render(
+      <Comment
+        currentUser={currentUser}
+        comment={comment}
+        addNewReply={jest.fn()}
+        deleteComment={jest.fn()}
+        editComment={jest.fn()}
+        updateScore={jest.fn()}
+      />
+    );
 
     // when asserting that an element isn't there, use queryBy
     expect(screen.queryByRole("textbox")).toBeNull();
@@ -115,7 +139,16 @@ describe("Single comment", () => {
   });
 
   test("Can not vote on own comments", () => {
-    render(<Comment currentUser={currentUser} comment={comment} />);
+    render(
+      <Comment
+        currentUser={currentUser}
+        comment={comment}
+        addNewReply={jest.fn()}
+        deleteComment={jest.fn()}
+        editComment={jest.fn()}
+        updateScore={jest.fn()}
+      />
+    );
     expect(screen.queryByRole("button", { name: "+" })).toHaveAttribute(
       "disabled"
     );
@@ -127,7 +160,14 @@ describe("Single comment", () => {
   test("Edit form displays error message for: empty input", async () => {
     const user = userEvent.setup();
     const content = "some random content.";
-    render(<EditForm content={content} />);
+    render(
+      <EditForm
+        content={content}
+        commentID={42}
+        handleToggleEdit={jest.fn()}
+        editComment={jest.fn()}
+      />
+    );
     await user.clear(screen.getByRole("textbox"));
     await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
@@ -138,7 +178,14 @@ describe("Single comment", () => {
   test("Edit form displays error message for: input less than minimum length", async () => {
     const user = userEvent.setup();
     const content = "some random content.";
-    render(<EditForm content={content} />);
+    render(
+      <EditForm
+        content={content}
+        commentID={42}
+        handleToggleEdit={jest.fn()}
+        editComment={jest.fn()}
+      />
+    );
     await user.clear(screen.getByRole("textbox"));
     await user.type(screen.getByRole("textbox"), "1234567");
     await user.click(screen.getByRole("button"));
@@ -150,7 +197,14 @@ describe("Single comment", () => {
   test("Edit form displays error message for: input greater than minimum length", async () => {
     const user = userEvent.setup();
     const content = "some random content.";
-    render(<EditForm content={content} />);
+    render(
+      <EditForm
+        content={content}
+        commentID={42}
+        handleToggleEdit={jest.fn()}
+        editComment={jest.fn()}
+      />
+    );
     const tooLong = "12345678".repeat(32) + "1";
     await user.clear(screen.getByRole("textbox"));
     await user.type(screen.getByRole("textbox"), tooLong);
@@ -164,7 +218,7 @@ describe("Single comment", () => {
 describe("Comment reply", () => {
   //props
 
-  const currentUser = {
+  const currentUser: IUser = {
     image: {
       png: "./images/avatars/image-juliusomo.png",
       webp: "./images/avatars/image-juliusomo.webp"
@@ -172,7 +226,7 @@ describe("Comment reply", () => {
     username: "juliusomo"
   };
 
-  const comment = {
+  const comment: IComment = {
     id: 1,
     content: "This is the comment content",
     createdAt: "5 months ago",
@@ -189,7 +243,16 @@ describe("Comment reply", () => {
 
   test("Toggles reply form", async () => {
     const user = userEvent.setup();
-    render(<Comment currentUser={currentUser} comment={comment} />);
+    render(
+      <Comment
+        currentUser={currentUser}
+        comment={comment}
+        addNewReply={jest.fn()}
+        deleteComment={jest.fn()}
+        editComment={jest.fn()}
+        updateScore={jest.fn()}
+      />
+    );
 
     // when asserting that an element isn't there, use queryBy
     expect(screen.queryByRole("textbox")).toBeNull();
@@ -207,7 +270,15 @@ describe("Comment reply", () => {
   });
 
   test("Reply form displays User avatar", async () => {
-    render(<ReplyForm currentUser={currentUser} />);
+    render(
+      <ReplyForm
+        currentUser={currentUser}
+        username="bob"
+        commentID={42}
+        handleToggleReply={jest.fn()}
+        addNewReply={jest.fn}
+      />
+    );
     expect(screen.getByAltText("avatar")).toHaveAttribute(
       "src",
       "./images/avatars/image-juliusomo.png"
@@ -215,7 +286,15 @@ describe("Comment reply", () => {
   });
 
   test("Reply form has placeholder text", async () => {
-    render(<ReplyForm currentUser={currentUser} />);
+    render(
+      <ReplyForm
+        currentUser={currentUser}
+        username="bob"
+        commentID={42}
+        handleToggleReply={jest.fn()}
+        addNewReply={jest.fn}
+      />
+    );
     expect(screen.getByRole("textbox")).toHaveAttribute(
       "placeholder",
       "Add a comment..."
@@ -224,12 +303,14 @@ describe("Comment reply", () => {
 
   test("Reply starts with commenter's username", async () => {
     const user = userEvent.setup();
-    const addNewReply = jest.fn();
     render(
       <Comment
         currentUser={currentUser}
         comment={comment}
-        addNewReply={addNewReply}
+        addNewReply={jest.fn()}
+        deleteComment={jest.fn()}
+        editComment={jest.fn()}
+        updateScore={jest.fn()}
       />
     );
     await user.click(screen.getByRole("button", { name: "Reply" }));
@@ -238,7 +319,15 @@ describe("Comment reply", () => {
 
   test("Reply form displays error message for: empty input", async () => {
     const user = userEvent.setup();
-    render(<ReplyForm currentUser={currentUser} username="joebloggs" />);
+    render(
+      <ReplyForm
+        currentUser={currentUser}
+        username="bob"
+        commentID={42}
+        handleToggleReply={jest.fn()}
+        addNewReply={jest.fn}
+      />
+    );
     await user.clear(screen.getByRole("textbox"));
     await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
@@ -248,7 +337,15 @@ describe("Comment reply", () => {
 
   test("Reply form displays error message for: input less than minimum length", async () => {
     const user = userEvent.setup();
-    render(<ReplyForm currentUser={currentUser} username="joebloggs" />);
+    render(
+      <ReplyForm
+        currentUser={currentUser}
+        username="bob"
+        commentID={42}
+        handleToggleReply={jest.fn()}
+        addNewReply={jest.fn}
+      />
+    );
     await user.clear(screen.getByRole("textbox"));
     await user.type(screen.getByRole("textbox"), "1234567");
     await user.click(screen.getByRole("button"));
@@ -259,7 +356,15 @@ describe("Comment reply", () => {
 
   test("Reply form displays error message for: input greater than minimum length", async () => {
     const user = userEvent.setup();
-    render(<ReplyForm currentUser={currentUser} username="joebloggs" />);
+    render(
+      <ReplyForm
+        currentUser={currentUser}
+        username="bob"
+        commentID={42}
+        handleToggleReply={jest.fn()}
+        addNewReply={jest.fn}
+      />
+    );
     const tooLong = "12345678".repeat(32) + "1";
     await user.clear(screen.getByRole("textbox"));
     await user.type(screen.getByRole("textbox"), tooLong);
@@ -271,7 +376,7 @@ describe("Comment reply", () => {
 });
 
 describe("New comment", () => {
-  const currentUser = {
+  const currentUser: IUser = {
     image: {
       png: "./images/avatars/image-juliusomo.png",
       webp: "./images/avatars/image-juliusomo.webp"
@@ -280,7 +385,9 @@ describe("New comment", () => {
   };
 
   test("New comment form displays User avatar", () => {
-    render(<NewCommentForm currentUser={currentUser} />);
+    render(
+      <NewCommentForm currentUser={currentUser} addNewComment={jest.fn()} />
+    );
     expect(screen.getByAltText("avatar")).toHaveAttribute(
       "src",
       "./images/avatars/image-juliusomo.png"
@@ -288,7 +395,9 @@ describe("New comment", () => {
   });
 
   test("New comment form has placeholder text", () => {
-    render(<NewCommentForm currentUser={currentUser} />);
+    render(
+      <NewCommentForm currentUser={currentUser} addNewComment={jest.fn()} />
+    );
     expect(screen.getByRole("textbox")).toHaveAttribute(
       "placeholder",
       "Add a comment..."
@@ -310,7 +419,9 @@ describe("New comment", () => {
 
   test("New comment form displays error message for: empty input", async () => {
     const user = userEvent.setup();
-    render(<NewCommentForm currentUser={currentUser} />);
+    render(
+      <NewCommentForm currentUser={currentUser} addNewComment={jest.fn()} />
+    );
     await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
       "Please add a comment, minimum 8 characters."
@@ -319,7 +430,9 @@ describe("New comment", () => {
 
   test("New comment form displays error message for: input less than minimum length", async () => {
     const user = userEvent.setup();
-    render(<NewCommentForm currentUser={currentUser} />);
+    render(
+      <NewCommentForm currentUser={currentUser} addNewComment={jest.fn()} />
+    );
     await user.type(screen.getByRole("textbox"), "1234567");
     await user.click(screen.getByRole("button"));
     expect(screen.getByTestId("formError")).toHaveTextContent(
@@ -329,7 +442,9 @@ describe("New comment", () => {
 
   test("New comment form displays error message for: input greater than minimum length", async () => {
     const user = userEvent.setup();
-    render(<NewCommentForm currentUser={currentUser} />);
+    render(
+      <NewCommentForm currentUser={currentUser} addNewComment={jest.fn()} />
+    );
     const tooLong = "12345678".repeat(32) + "1";
     await user.type(screen.getByRole("textbox"), tooLong);
     await user.click(screen.getByRole("button"));
@@ -341,7 +456,7 @@ describe("New comment", () => {
 
 describe("Comment voting", () => {
   //props
-  const currentUser = {
+  const currentUser: IUser = {
     image: {
       png: "./images/avatars/image-juliusomo.png",
       webp: "./images/avatars/image-juliusomo.webp"
@@ -349,7 +464,7 @@ describe("Comment voting", () => {
     username: "user1"
   };
 
-  const comment = {
+  const comment: IComment = {
     id: 42,
     content: "Voting on this comment by another user. ",
     createdAt: "5 months ago",
@@ -371,6 +486,9 @@ describe("Comment voting", () => {
       <Comment
         currentUser={currentUser}
         comment={comment}
+        addNewReply={jest.fn()}
+        deleteComment={jest.fn()}
+        editComment={jest.fn()}
         updateScore={updateScore}
       />
     );
@@ -383,5 +501,3 @@ describe("Comment voting", () => {
     expect(updateScore).toHaveBeenCalledWith(42, -1);
   });
 });
-
-export {};
