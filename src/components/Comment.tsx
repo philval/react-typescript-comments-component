@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IComment, IUser } from "./CommentsInterface";
-import timeAgo from "src/utils/timeAgo";
+import timeAgo from "../utils/timeAgo";
 import ReplyForm from "../components/ReplyForm";
 import EditForm from "../components/EditForm";
 import DeleteModal from "./DeleteModal";
