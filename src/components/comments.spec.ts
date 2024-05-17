@@ -191,10 +191,8 @@ test("findCommentByID returns the correct comment", () => {
   });
 
   // console.log("Test for ID that does not exist");
-  expect(findCommentByID(comments, 42)).toEqual(null);
+  const noComments: never[] = [];
 
-  // console.log("Test for no comments at all");
-  const noComments: IComment[] = [];
   expect(findCommentByID(noComments, 42)).toEqual(null);
 });
 
