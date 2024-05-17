@@ -1,10 +1,11 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} */
-module.exports = {
-  preset: "ts-jest",
-  testEnvironment: "node",
-  globals: {
-    "ts-jest": {
-      tsconfig: "./tsconfig.json"
-    }
+export default {
+  transform: {
+    "^.+\\.(ts|tsx)$": "babel-jest"
+  },
+  moduleNameMapper: {
+    "\\.(css|svg)$": "<rootDir>/__mocks__/mock.js"
   }
 };
+
+// mock css and svg files when using Jest.
+// https://jestjs.io/docs/configuration#modulenamemapper-objectstring-string--arraystring
