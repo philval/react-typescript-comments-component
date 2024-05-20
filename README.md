@@ -161,4 +161,12 @@ A second sideeffect was simplifying my test setup for a `<Dialog />` component. 
 
 My feeling is that CRA was doing "a lot of magic under the hood", including using Jest as its test runner out of the box. Setting Jest up from scratch was a good process to go through.
 
+## Deployment to Vercel
+
+After switching to Vite, the deployment to Vercel failed with:
+
+_"Error: No Output Directory named "build" found after the Build completed. You can configure the Output Directory in your Project Settings."_
+
+The `/build` directory definitely contained bundle assets when running `npm run build` in my devcontainer. So, I deleted `/build`, ran `npm run build` again... and the build directory was now `/dist` - Vite defaults to `/dist`. The problem was that the Vercel "Framework Preset" was configured for Create-React-App. One small Vercel settings update to Vite, and the deployment succeeded.
+
 ... end ...
