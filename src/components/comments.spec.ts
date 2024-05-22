@@ -1,4 +1,5 @@
 import { IComment } from "./CommentsInterface";
+import { findCommentByID } from "./commentsUtils";
 
 const data = [
   {
@@ -117,8 +118,6 @@ const data = [
     ]
   }
 ];
-
-import { findCommentByID } from "./Comments";
 
 test("findCommentByID returns the correct comment", () => {
   // Arrange
